@@ -1,0 +1,47 @@
+{% extends "mainTemplate.html" %}
+{% block title %}Chat Rooms{% endblock %}
+{% block body %}
+    <h2>Chat Rooms</h2>
+    {% if error %}
+        <div class="error">
+            <strong>Error:</strong>
+            {{ error }}
+        </div>
+    {% endif %}
+    <div class="twitbox">
+        <h3>Create a Room!</h3>
+        <form action="{{ url_for('create_chat_room')}}" method="post">
+            <dl>
+                <dt>Name:</dt>
+                <dd><input type="text" name="name" size="256" required></dd>
+            </dl>
+            <div class="actions"><input type="submit" value="Create"></div>
+        </form>
+    </div>
+    {% if rooms|length != 0%}
+        <center>
+            <h3>Available Rooms</h3>
+            <table class="messages">
+
+                {% for room, user in rooms.items() %}
+                    <tr>
+                        <td style="padding:0 15px 0 15px; text-align: center;">{{ room }}</td>
+                        <td>
+                            <a class="unfollow" href="{{ url_for('join_room', r=room) }}">Join Room</a>
+                        </td>
+
+                        {% if user == session['username'] %}
+                        <td>
+                            <a class="unfollow" href="{{ url_for('delete_room', r=room) }}">Delete Room</a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </center>
+    {% else %}
+        <center>
+            <em>There are currently no open chat rooms.</em>
+        </center>
+    {% endif %}
+{% endblock %}

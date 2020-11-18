@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<title>{% block title %}Welcome{% endblock %} | PingPong</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<div class="page">
+        <center><h1>PingPong</h1></center>
+        {% if g.user %}
+        <div class="navigation">
+            <a href="{{ url_for('logout') }}">Logoff {{ g.user }} </a>
+            {%block nav%}
+            {%endblock%}
+        </div>
+        {% endif %}
+        <center>
+        <div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <center>
+                       {{ message }}
+                    </center>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
+        </center>
+    <div class="body">
+        {% block body %}
+        {% endblock %}
+    </div>
+    <div class="footer">
+        PingPong - A simple messaging platform
+    </div>
+</div>

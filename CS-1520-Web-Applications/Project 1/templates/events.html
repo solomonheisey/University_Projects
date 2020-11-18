@@ -1,0 +1,127 @@
+{% extends "homepage.html" %}
+{% block title %}
+    {% if request.endpoint == 'public_page' %}
+        Public Events
+    {% else %}
+        My Events
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <h2>{{ self.title() }}</h2>
+    {% if g.user %}
+        {%  if request.endpoint == 'get_users_events' %}
+            <div class="twitbox">
+                <h3>Let's plan this event!</h3>
+                <form action="{{ url_for('create_event')}}" method="post">
+                    <dl>
+                        <dt>Title:</dt>
+                        <dd><input type="text" name="title" size="256" required></dd>
+                        <dt>Description:</dt>
+                        <dd><input type="text"name="description" size="256"></dd>
+                        <dt>Start date/time (yyyy-MM-ddThh:mm):</dt>
+                        <dd><input type="datetime-local" name="start" required></dd>
+                        <dt>End date/time (yyyy-MM-ddThh:mm):</dt>
+                        <dd><input type="datetime-local" name="end" required></dd>
+                    </dl>
+                    <div class="actions"><input type="submit" value="Create"></div>
+                </form>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if g.user %}
+        <center>
+            <h2>My Hosted Events</h2>
+        </center>
+    {% else %}
+        <center>
+            <h2>All Events</h2>
+        </center>
+    {% endif %}
+    {% if events|length != 0 %}
+        <center>
+        <table class="messages">
+                <tr>
+                    <th style="padding:0 15px 0 15px; text-align: center;">Title</th>
+                    <th style="padding:0 15px 0 15px; text-align: center;">Description</th>
+                    <th style="padding:0 15px 0 15px; text-align: center;">Start</th>
+                    <th style="padding:0 15px 0 15px; text-align: center;">End</th>
+                    <th style="padding:0 15px 0 15px; text-align: center;">Host</th>
+
+                    {% if g.user %}
+                        <th style="padding:0 15px 0 15px; text-align: center;"></th>
+                    {% endif %}
+                </tr>
+
+                {% for event in events %}
+                    <tr>
+                        <td style="padding:0 15px 0 15px; text-align: center; border: 1px solid black;">{{ event.title }}</td>
+                        <td style="padding:0 15px 0 15px; text-align: center;border: 1px solid black;">{{ event.description }}</td>
+                        <td style="padding:0 15px 0 15px; text-align: center;border: 1px solid black;">{{ event.start }}</td>
+                        <td style="padding:0 15px 0 15px;text-align: center;border: 1px solid black;">{{ event.end }}</td>
+                        <td style="padding:0 15px 0 15px;text-align: center;border: 1px solid black;">{{ event.host_username }}</td>
+                        {% if g.user %}
+                            <td>
+                                <a class="unfollow" href="{{ url_for('cancel_event', e=event.event_id) }}">Cancel</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+        </table>
+        </center>
+    {% else %}
+        {% if g.user %}
+            <center>
+                <em>You are not currently hosting any events.</em>
+            </center>
+
+        {% else %}
+            <center>
+                <em>There are currently no events being hosted.</em>
+            </center>
+        {% endif %}
+    {% endif %}
+
+    {# all events except user logged in #}
+    {% if g.user %}
+        {% if request.endpoint == 'get_users_events' %}
+            <br>
+            <br>
+            <center>
+                <h2>Explore Events</h2>
+            </center>
+
+            {% if public|length != 0 %}
+                <center>
+                <table class="messages">
+                        <tr>
+                            <th style="padding:0 15px 0 15px; text-align: center;">Title</th>
+                            <th style="padding:0 15px 0 15px; text-align: center;">Description</th>
+                            <th style="padding:0 15px 0 15px; text-align: center;">Start</th>
+                            <th style="padding:0 15px 0 15px; text-align: center;">End</th>
+                            <th style="padding:0 15px 0 15px; text-align: center;">Host</th>
+                            <th style="padding:0 15px 0 15px; text-align: center;"></th>
+                        </tr>
+
+                        {% for p in public %}
+                            <tr>
+                                <td style="padding:0 15px 0 15px; text-align: center; border: 1px solid black;">{{ p.title }}</td>
+                                <td style="padding:0 15px 0 15px; text-align: center;border: 1px solid black;">{{ p.description }}</td>
+                                <td style="padding:0 15px 0 15px; text-align: center;border: 1px solid black;">{{ p.start }}</td>
+                                <td style="padding:0 15px 0 15px;text-align: center;border: 1px solid black;">{{ p.end }}</td>
+                                <td style="padding:0 15px 0 15px;text-align: center;border: 1px solid black;">{{ p.host_username }}</td>
+                                <td>
+                                    <a class="follow" href="{{ url_for('attend_event', e=p.event_id) }} ">Attend</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                </table>
+                </center>
+            {% else %}
+                    <center>
+                        <em>There are currently no public events being hosted.</em>
+                    </center>
+
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

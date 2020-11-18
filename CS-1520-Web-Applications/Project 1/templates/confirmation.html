@@ -1,0 +1,24 @@
+{%extends 'homepage.html'%}
+{% block title %}
+Confirm Event Cancellation
+{% endblock %}
+{% block body %}
+    <h2>{{ self.title() }}</h2>
+        <table class="messages">
+            <tr>
+                <th style="padding:0 15px 0 15px; text-align: center;">Title</th>
+                <th style="padding:0 15px 0 15px; text-align: center;">Description</th>
+                <th style="padding:0 15px 0 15px; text-align: center;">Start</th>
+                <th style="padding:0 15px 0 15px; text-align: center;">End</th>
+            </tr>
+            <tr>
+                <td style="padding:0 15px 0 15px; text-align: center; border: 1px solid black;">{{ e.title }}</td>
+                <td style="padding:0 15px 0 15px; text-align: center;border: 1px solid black;">{{ e.description }}</td>
+                <td style="padding:0 15px 0 15px; text-align: center;border: 1px solid black;">{{ e.start }}</td>
+                <td style="padding:0 15px 0 15px;text-align: center;border: 1px solid black;">{{ e.end }}</td>
+            </tr>
+        </table>
+
+    <a class="unfollow" href="{{ url_for('cancel_event_confirm', e_id=e.event_id, c=1) }}"><p style="padding:0 15px 0 15px; text-align: center;">Confirm Cancellation</p></a>
+    <a class="follow" href="{{ url_for('cancel_event_confirm', e_id=e.event_id, c=0) }}"><p style="padding:0 15px 0 15px; text-align: center;">Cancel Cancellation</p></a>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "mainTemplate.html" %}
+{% block title %}{{r}}{% endblock %}
+{% block nav %}
+    <br>
+    <a href="{{ url_for('leave', r=r) }}">Leave {{r}}</a>
+{% endblock %}}
+{% block body %}
+    <h2>{{r}}</h2>
+    {% if error %}
+        <div class="error">
+            <strong>Error:</strong>
+            {{ error }}
+        </div>
+    {% endif %}
+    <table id="messages">
+        {% for i in a %}
+            {% set message = m[loop.index-1] %}
+            {% set author = a[loop.index-1] %}
+
+            {% if author == session['username'] %}
+            <tr>
+                <td colspan="2"></td>
+                <td style="font-size: 12px"> {{author}} </td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+                <td style="font-size: 15px"><b>{{message}}</b> </td>
+            </tr>
+            <br>
+            {%else%}
+                <tr>
+                    <td style="font-size: 12px">{{author}} </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 15px"><b>{{message}}</b></td>
+                </tr>
+                <br>
+            {% endif %}
+        {%endfor%}
+    </table>
+    <form name ="newMessage">
+        <input style="width: 585px;" type="text" id="messageContent" name="messageContent" value="" />
+        <input type="hidden" id="hidden" name="hidden" value="{{session['username']}}"/>
+        <input type="hidden" id="hiddenRoom" name="hiddenRoom" value="{{session['currRoom']}}"/>
+        <input type="button" id="send" value="send" />
+    </form>
+{% endblock %}
+

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bingo!</title>
+    <style>
+        #BColumn li{
+            border: 1px solid black;
+        }
+        #IColumn li{
+            border: 1px solid black;
+        }
+        #NColumn li{
+            border: 1px solid black;
+        }
+        #GColumn li{
+            border: 1px solid black;
+        }
+        #OColumn li{
+            border: 1px solid black;
+        }
+    </style>
+    <script type="text/javascript">
+        function addWinListItem(win) {
+            var wins = document.getElementById("wins");
+            var listItem = document.createElement("li");
+
+            if(win !== 'win')
+                listItem.appendChild(document.createTextNode(win));
+
+            wins.appendChild(listItem);
+        }
+
+        function addLossListItem(loss) {
+            var losses = document.getElementById("losses");
+            var listItem = document.createElement("li");
+
+            if(loss !== 'loss')
+                listItem.appendChild(document.createTextNode(loss));
+
+            losses.appendChild(listItem);
+        }
+
+        function readLocalData() {
+
+            if (typeof (Storage) !== "undefined") {
+                var wins = document.getElementById("wins");
+                var losses = document.getElementById("losses");
+
+                var countWins = 0;
+                for (var i = 0; i < localStorage.length; i++) {
+                    console.log(localStorage.key(i));
+                    console.log(typeof (localStorage.key(i)));
+
+                    if (localStorage.getItem(i) === 'win')
+                        countWins++;
+                }
+                addWinListItem(countWins);
+
+                var countLosses = 0;
+                for (var j = 0; j < localStorage.length; j++) {
+                    console.log(localStorage.key(j));
+                    console.log(typeof (localStorage.key(j)));
+
+                    if (localStorage.getItem(j) === 'loss')
+                        countLosses++;
+                }
+                addLossListItem(countLosses);
+            }
+        }
+
+        function addLoss() {
+            if (typeof(Storage) !== "undefined") {
+                var i = localStorage.length;
+                localStorage.setItem(i, "loss")
+            }
+            addLossListItem("loss");
+        }
+
+        function addWin() {
+
+            if (typeof(Storage) !== "undefined") {
+                var i = localStorage.length;
+                localStorage.setItem(i, "win")
+            }
+            addWinListItem("win");
+        }
+
+        function clearHome() {
+            var x = document.getElementById("winsDiv");
+            x.style.display = "none";
+
+            var y = document.getElementById("lossesDiv");
+            y.style.display = "none";
+
+            var buttonX = document.getElementById("new-game-random");
+            buttonX.style.display = "none";
+
+            var buttonY = document.getElementById("new-game-specified");
+            buttonY.style.display = "none";
+
+            var title = document.getElementById("scoreboard");
+            title.style.display = "none";
+        }
+
+        function randomNumbers(genNums, list) {
+            for(let count = 0; count < 5; count++) {
+                var position = Math.floor(Math.random() * genNums.length);
+                var randomElement = genNums[position];
+
+                    for (var i = 0; i < genNums.length; i++)
+                        if(genNums[i] === randomElement)
+                            genNums.splice(i, 1);
+
+                    list[count] = randomElement;
+            }
+            return list;
+        }
+
+
+        var columnB = [];
+        var columnI = [];
+        var columnN = [];
+        var columnG = [];
+        var columnO = [];
+
+        function format(response){
+            //work on duplicates
+            const REGEX = new RegExp(/^b\(([1-9]|1[0-5]),([1-9]|1[0-5]),([1-9]|1[0-5]),([1-9]|1[0-5]),([1-9]|1[0-5])\)i\((1[6-9]|2[0-9]|3[0]),(1[6-9]|2[0-9]|3[0]),(1[6-9]|2[0-9]|3[0]),(1[6-9]|2[0-9]|3[0]),(1[6-9]|2[0-9]|3[0])\)n\((3[1-9]|4[0-5]),(3[1-9]|4[0-5]),f,(3[1-9]|4[0-5]),(3[1-9]|4[0-5])\)g\((4[6-9]|5[0-9]|6[0]),(4[6-9]|5[0-9]|6[0]),(4[6-9]|5[0-9]|6[0]),(4[6-9]|5[0-9]|6[0]),(4[6-9]|5[0-9]|6[0])\)o\((6[1-9]|7[0-5]),(6[1-9]|7[0-5]),(6[1-9]|7[0-5]),(6[1-9]|7[0-5]),(6[1-9]|7[0-5])\)*/, 'i');
+            if (REGEX.test(response)){
+                var num = response.toString().replace(/[^0-9]/g,' ');
+
+                var array = [];
+                var digit;
+
+                for(let i = 0; i < num.length; i++) {
+                    if(num[i] !== " ") {
+                        digit = num[i]
+                        if (num[i + 1] === " " && num[i-1] === " " || num[i+1] == null) {
+                            digit = parseInt(digit)
+                            array.push(digit)
+                        } else if(num[i-1] === " "){
+                            digit2 = num[i+1];
+                            digit = digit.toString() + digit2.toString();
+                            digit = parseInt(digit)
+                            array.push(digit)
+                        }
+                    }
+                }
+
+                var index = 0;
+                var temp = 0;
+                var temp2 = 0;
+                var temp4 = 0;
+                var temp5 = 0;
+
+
+                var array = [...array];
+
+                while (index < array.length){
+                    if(index < 5)
+                        columnB[index] = array[index]
+                    index++;
+                }
+
+                index = 0;
+                while(index < array.length) {
+                    if(index >= 5 && index <= 9) {
+                        columnI[temp] = array[index]
+                        temp++;
+                    }
+                    index++;
+                }
+
+                index = 0;
+                while(index < array.length) {
+                    if(temp2 === 2) {
+                        columnN[temp2] = 'FREE'
+                        temp2++;
+                    }
+
+                    if(index >= 10 && index <= 11) {
+                        columnN[temp2] = array[index]
+                        temp2++;
+                    }
+                    index++;
+                }
+
+                index = 0;
+                while(index < array.length) {
+                    if(index >= 12 && index <= 13) {
+                        columnN[temp2] = array[index]
+                        temp2++;
+                    }
+                    index++;
+                }
+
+                index = 0;
+                while(index < array.length) {
+                    if(index >= 14 && index <= 18) {
+                        columnG[temp4] = array[index]
+                        temp4++;
+                    }
+                    index++;
+                }
+
+                index = 0;
+                while(index < array.length) {
+                    if(index >= 19) {
+                        columnO[temp5] = array[index]
+                        temp5++;
+                    }
+                    index++;
+
+
+                }
+                if(hasDuplicates(columnB) || hasDuplicates(columnI) || hasDuplicates(columnN) || hasDuplicates(columnG) || hasDuplicates(columnO))
+                    return false;
+
+                return true;
+            }
+        }
+
+        function hasDuplicates(array) {
+            return new Set(array).size !== array.length;
+        }
+
+        function generateSpecified() {
+            var response = prompt("Please enter your bingo configuration:");
+
+            if(!response)
+                return;
+
+            var valid = false;
+            while(valid === false) {
+
+                let test = format(response)
+
+                if(!test)
+                    response = prompt("Invalid entry, please try again.")
+                if(test)
+                    break;
+            }
+
+            alert("Generating Board...")
+            generateSpecifiedBoard()
+        }
+
+        function generateSpecifiedBoard() {
+            clearHome();
+
+            var win = document.getElementById("i-win");
+            win.style.display = "inline";
+
+            var loss = document.getElementById("i-lost");
+            loss.style.display = "inline";
+
+            var B = document.getElementById("B");
+            B.style.display = "inline";
+
+            var I = document.getElementById("I");
+            I.style.display = "inline";
+
+            var N = document.getElementById("N");
+            N.style.display = "inline";
+
+            var G = document.getElementById("G");
+            G.style.display = "inline";
+
+            var O = document.getElementById("O");
+            O.style.display = "inline";
+
+            for( let count = 0; count < 5; count++ ) {
+                var bListItem = document.createElement("li");
+                var BColumn = document.getElementById("BColumn");
+                bListItem.appendChild(document.createTextNode(columnB[count]));
+                BColumn.appendChild(bListItem).addEventListener("click",cellClick);
+
+                var iListItem = document.createElement("li");
+                var IColumn = document.getElementById("IColumn");
+                iListItem.appendChild(document.createTextNode(columnI[count]));
+                IColumn.appendChild(iListItem).addEventListener("click",cellClick);
+
+                var nListItem = document.createElement("li");
+                var NColumn = document.getElementById("NColumn");
+                nListItem.appendChild(document.createTextNode(columnN[count]));
+
+
+                console.log(columnN[count])
+                if (columnN[count] === 'FREE') {
+                    NColumn.appendChild(nListItem).style="background-color: yellow;";
+                    NColumn.appendChild(nListItem).addEventListener("click",cellClick);
+                }
+                else {
+                    NColumn.appendChild(nListItem).addEventListener("click", cellClick);
+                    NColumn.myParam = NColumn
+                }
+
+                var gListItem = document.createElement("li");
+                var GColumn = document.getElementById("GColumn");
+                gListItem.appendChild(document.createTextNode(columnG[count]));
+                GColumn.appendChild(gListItem).addEventListener("click",cellClick);
+
+                var oListItem = document.createElement("li");
+                var OColumn = document.getElementById("OColumn");
+                oListItem.appendChild(document.createTextNode(columnO[count]));
+                OColumn.appendChild(oListItem).addEventListener("click",cellClick);
+            }
+        }
+
+
+        function generateRandom() {
+            clearHome();
+
+            var win = document.getElementById("i-win");
+            win.style.display = "inline";
+
+            var loss = document.getElementById("i-lost");
+            loss.style.display = "inline";
+
+            var B = document.getElementById("B");
+            B.style.display = "inline";
+
+            var I = document.getElementById("I");
+            I.style.display = "inline";
+
+            var N = document.getElementById("N");
+            N.style.display = "inline";
+
+            var G = document.getElementById("G");
+            G.style.display = "inline";
+
+            var O = document.getElementById("O");
+            O.style.display = "inline";
+
+            var bNums = [];
+            for(let temp = 1; temp <= 15; temp++)
+                bNums.push(temp);
+
+            var iNums = [];
+            for(let temp = 16; temp <= 30; temp++)
+                iNums.push(temp);
+
+            var nNums = [];
+            for(let temp = 31; temp <= 45; temp++)
+                nNums.push(temp);
+
+            var gNums = [];
+            for(let temp = 46; temp <= 60; temp++)
+                gNums.push(temp);
+
+            var oNums = [];
+            for(let temp = 61; temp <= 75; temp++)
+                oNums.push(temp);
+
+            var bList = [0,0,0,0,0]
+            var iList = [0,0,0,0,0]
+            var nList = [0,0,0,0,0]
+            var gList = [0,0,0,0,0]
+            var oList = [0,0,0,0,0]
+
+            bList = randomNumbers(bNums, bList);
+            iList = randomNumbers(iNums, iList);
+            nList = randomNumbers(nNums, nList);
+            nList[2] = "FREE";
+
+            gList = randomNumbers(gNums, gList);
+            oList = randomNumbers(oNums, oList);
+
+            for( let count = 0; count < 5; count++ ) {
+                var bListItem = document.createElement("li");
+                var BColumn = document.getElementById("BColumn");
+                bListItem.appendChild(document.createTextNode(bList[count]));
+                BColumn.appendChild(bListItem).addEventListener("click",cellClick);
+
+                var iListItem = document.createElement("li");
+                var IColumn = document.getElementById("IColumn");
+                iListItem.appendChild(document.createTextNode(iList[count]));
+                IColumn.appendChild(iListItem).addEventListener("click",cellClick);
+
+                var nListItem = document.createElement("li");
+                var NColumn = document.getElementById("NColumn");
+                nListItem.appendChild(document.createTextNode(nList[count]));
+
+                if (nList[count] === 'FREE') {
+                    NColumn.appendChild(nListItem).style="background-color: yellow;";
+                    NColumn.appendChild(nListItem).addEventListener("click",cellClick);
+                }
+                else {
+                    NColumn.appendChild(nListItem).addEventListener("click", cellClick);
+                    NColumn.myParam = NColumn
+                }
+
+                var gListItem = document.createElement("li");
+                var GColumn = document.getElementById("GColumn");
+                gListItem.appendChild(document.createTextNode(gList[count]));
+                GColumn.appendChild(gListItem).addEventListener("click",cellClick);
+
+                var oListItem = document.createElement("li");
+                var OColumn = document.getElementById("OColumn");
+                oListItem.appendChild(document.createTextNode(oList[count]));
+                OColumn.appendChild(oListItem).addEventListener("click",cellClick);
+            }
+        }
+
+        function checkVertical() {
+            var BCol = document.getElementById("BColumn").getElementsByTagName("li");
+            var ICol = document.getElementById("IColumn").getElementsByTagName("li");
+            var NCol = document.getElementById("NColumn").getElementsByTagName("li");
+            var GCol = document.getElementById("GColumn").getElementsByTagName("li");
+            var OCol = document.getElementById("OColumn").getElementsByTagName("li");
+
+
+            var bCount = 0;
+            var iCount = 0;
+            var nCount = 0;
+            var gCount = 0;
+            var oCount = 0;
+
+            for(let j = 0; j < 6; j++) {
+
+                let b = BCol[j].style.backgroundColor
+                let i = ICol[j].style.backgroundColor
+                let n = NCol[j].style.backgroundColor
+                let g = GCol[j].style.backgroundColor
+                let o = OCol[j].style.backgroundColor
+
+                if(b === "yellow")
+                    bCount++;
+                if(i === "yellow")
+                    iCount++;
+                if(n === "yellow")
+                    nCount++;
+                if(g === "yellow")
+                    gCount++;
+                if(o === "yellow")
+                    oCount++;
+            }
+
+            return bCount === 5 || iCount === 5 || nCount === 5 || gCount === 5 || oCount === 5;
+        }
+
+        function checkHorizontal() {
+            var BCol = document.getElementById("BColumn").getElementsByTagName("li");
+            var ICol = document.getElementById("IColumn").getElementsByTagName("li");
+            var NCol = document.getElementById("NColumn").getElementsByTagName("li");
+            var GCol = document.getElementById("GColumn").getElementsByTagName("li");
+            var OCol = document.getElementById("OColumn").getElementsByTagName("li");
+
+            for(let j = 0; j < 6; j++) {
+                let b = BCol[j].style.backgroundColor
+                let i = ICol[j].style.backgroundColor
+                let n = NCol[j].style.backgroundColor
+                let g = GCol[j].style.backgroundColor
+                let o = OCol[j].style.backgroundColor
+
+                if(b === "yellow" && i === "yellow" && n === "yellow" && g === "yellow" && o === "yellow")
+                  return true;
+            }
+            return false;
+        }
+
+        function checkDiagonal() {
+            var BCol = document.getElementById("BColumn").getElementsByTagName("li");
+            var ICol = document.getElementById("IColumn").getElementsByTagName("li");
+            var NCol = document.getElementById("NColumn").getElementsByTagName("li");
+            var GCol = document.getElementById("GColumn").getElementsByTagName("li");
+            var OCol = document.getElementById("OColumn").getElementsByTagName("li");
+
+
+            var b = BCol[1].style.backgroundColor;
+            var i = ICol[2].style.backgroundColor
+            var n = NCol[3].style.backgroundColor
+            var g = GCol[4].style.backgroundColor
+            var o = OCol[5].style.backgroundColor
+
+            if(b === "yellow" && i === "yellow" && n === "yellow" && g === "yellow" && o === "yellow")
+                return true;
+
+            b = BCol[5].style.backgroundColor
+            i = ICol[4].style.backgroundColor
+            n = NCol[3].style.backgroundColor
+            g = GCol[2].style.backgroundColor
+            o = OCol[1].style.backgroundColor
+
+            return b === "yellow" && i === "yellow" && n === "yellow" && g === "yellow" && o === "yellow";
+        }
+
+        function checkBingo() {
+            if(checkVertical() || checkHorizontal() || checkDiagonal()) {
+                alert("BINGO")
+            }
+        }
+
+        function cellClick() {
+            if(!this.innerHTML.includes('FREE')) {
+                if (this.style.backgroundColor === 'yellow')
+                    this.style.backgroundColor = 'white';
+                else
+                    this.style.backgroundColor = 'yellow';
+            }
+            checkBingo();
+        }
+
+        function verifyWin() {
+            if(checkVertical() || checkHorizontal() || checkDiagonal()) {
+                addWin();
+                location.reload();
+            } else {
+                alert('Unfortunately, you do not have bingo');
+            }
+        }
+
+        function loss() {
+            addLoss();
+            location.reload();
+        }
+
+        function setup() {
+            document.getElementById("i-win").addEventListener("click", verifyWin, true);
+            document.getElementById("i-lost").addEventListener("click", loss, true);
+
+            document.getElementById("new-game-random").addEventListener("click", generateRandom, true);
+            document.getElementById("new-game-specified").addEventListener("click", generateSpecified, true);
+
+            readLocalData();
+        }
+
+    window.addEventListener("load", setup, true);
+    </script>
+</head>
+<body>
+    <center>
+        <h1 id="scoreboard">Bingo Scoreboard</h1>
+    </center>
+
+    <div id="winsDiv" style="float: left; width: 50%;">
+        <ul id="wins" style="list-style-type: none; text-align: center">
+            <li><h2>Wins</h2></li>
+        </ul>
+    </div>
+
+    <div id="lossesDiv" style="float: right; width: 50%;">
+        <ul id="losses" style="list-style-type: none; text-align: center;">
+            <li><h2>Losses</h2></li>
+        </ul>
+    </div>
+    <center>
+        <input id="new-game-random" type="button" value="New Random Game">
+        <input id="new-game-specified" type="button" value="New Specified Game">
+    </center>
+
+
+    <div id="B" style="float: left; width: 20%; display: none">
+        <ul id="BColumn" style="list-style-type: none; text-align: center;">
+            <li><h2>B</h2></li>
+        </ul>
+    </div>
+
+    <div id="I" style="float: left; width: 20%; display: none">
+        <ul id="IColumn" style="list-style-type: none; text-align: center;">
+            <li><h2>I</h2></li>
+        </ul>
+    </div>
+
+    <div id="N" style="float: left; width: 20%; display: none">
+        <ul id="NColumn" style="list-style-type: none; text-align: center;">
+            <li><h2>N</h2></li>
+        </ul>
+    </div>
+
+    <div id="G" style="float: left; width: 20%; display: none">
+        <ul id="GColumn" style="list-style-type: none; text-align: center;">
+            <li><h2>G</h2></li>
+        </ul>
+    </div>
+
+    <div id="O" style="float: left; width: 20%; display: none">
+        <ul id="OColumn" style="list-style-type: none; text-align: center;">
+            <li><h2>O</h2></li>
+        </ul>
+    </div>
+
+
+    <br>
+    <br>
+    <center>
+        <input style="display: none" id="i-win" type="button" value="I won!">
+        <input style="display: none" id="i-lost" type="button" value="I Lost">
+    </center>
+
+
+</body>
+</html>
