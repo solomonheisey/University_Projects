@@ -1,0 +1,25 @@
+{% extends "mainTemplate.html" %}
+{% block title %}Register{% endblock %}
+{% block body %}
+    <h2>Register</h2>
+    {% if error %}<div class="error"><strong>Error:</strong> {{ error }}</div>{% endif %}
+    <form action="" method="post">
+        <dl>
+            <dt>Username:</dt>
+            <dd><label>
+                <input type="text" name="username" style="width: 585px" size="30" value="{{ request.form.username }}">
+            </label></dd>
+            <dt>Password:</dt>
+            <dd><label>
+                <input type="password" style="width: 585px" name="password" size="30">
+            </label></dd>
+            <dt>Password <small>(repeat)</small>:</dt>
+            <dd><label>
+                <input type="password" style="width: 585px" name="passwordRepeat" size="30">
+            </label></dd>
+        </dl>
+        <div class="actions">
+            <input type="submit" value="Register">
+        </div>
+    </form>
+{% endblock %}

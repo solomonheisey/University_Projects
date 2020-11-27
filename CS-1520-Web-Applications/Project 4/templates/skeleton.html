@@ -1,0 +1,41 @@
+{% extends "mainTemplate.html" %}
+<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+{% block title %}Budget{% endblock %}
+{% block body %}
+    <h2><p id="date"></p></h2>
+    {% if error %}
+        <div class="error">
+            <strong>Error:</strong>
+            {{ error }}
+        </div>
+    {% endif %}
+    <h3>Categories</h3>
+    <table id="budgetTable" style="border-collapse: separate; border-spacing: 10px;">
+    </table>
+    <table id="category" style="border-collapse: separate; border-spacing: 10px;">
+    </table>
+    <div class="twitbox">
+        <h3>Add a category</h3>
+        <form id="newCategory">
+            <label style="width: 50px; display: inline-block;">Name:   </label>
+            <input style="width: 50%;" type="text" id="categoryName" name="categoryName" value="" required><br/>
+            <label style="width: 50px; display: inline-block;">Limit: $</label>
+            <input style="width: 50%;" type="number" id="limit" name="limit" min="0.00" step="0.01" required><br/>
+            <input type="button" id="submitButton" value="Add"/>
+        </form>
+    </div>
+    <div class="twitbox">
+        <h3>Add a purchase</h3>
+        <form id="newPurchase">
+            <label style="width: 125px; display: inline-block;">Cost: $</label>
+            <input style="width: 50%;" type="number" id="cost" name="cost" min="0.00" step="0.01" required><br/>
+            <label style="width: 125px; display: inline-block;">Description:  </label>
+            <input style="width: 50%;" type="text" id="description" name="description" value=""><br/>
+            <label style="width: 125px; display: inline-block;">Category Name: </label>
+            <input style="width: 50%;" type="text" id="categoryElement" name="categoryElement" value=""><br/>
+            <label style="width: 125px; display: inline-block;">Date: </label>
+            <input style="width: 50%" type="datetime-local" id="setDate" name="setDate" required><br/>
+            <input type="button" id="addPurchase" value="Add"/>
+        </form>
+    </div>
+{% endblock %}

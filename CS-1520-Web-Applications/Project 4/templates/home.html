@@ -1,0 +1,16 @@
+{% extends "mainTemplate.html" %}
+{% block body %}
+    {% if error %}
+        <div class="error">
+            <strong>Error:</strong>
+            {{ error }}
+        </div>
+    {% endif %}
+    <center>
+        <div>
+            <button style="width: 50%; height: 50px" onclick="location.href='{{ url_for('register') }}'">Register</button>
+            <br>
+            <button style="width: 50%; height: 50px" onclick="location.href='{{ url_for('login') }}'">Login</button>
+        </div>
+    </center>
+{% endblock %}
