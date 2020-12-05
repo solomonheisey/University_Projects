@@ -11,7 +11,7 @@ Required Packages
 ## Specification
 
 Below are the specifications for the application. I have split the specifications up based on MVC. Please read through the entired specification and submission guidlines before you start development.
-Model
+# Model
 
     User, each User must have:
         username
