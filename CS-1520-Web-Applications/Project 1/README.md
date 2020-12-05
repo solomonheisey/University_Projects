@@ -11,7 +11,7 @@ Required Packages
 ## Specification
 
 Below are the specifications for the application. I have split the specifications up based on MVC. Please read through the entired specification and submission guidlines before you start development.
-# Model
+### Model
 
     User, each User must have:
         username
@@ -33,7 +33,7 @@ Below are the specifications for the application. I have split the specification
         User can attend many Events and each Event will have many Users attending
     Note: You are not limited to the columns listed above. Add additional columns and association table as needed to facilitate the relationships between User and Event.
 
-## Controller
+### Controller
 
     You will need a homepage that displays:
         a list of upcoming events hosted by all users
@@ -52,7 +52,7 @@ Below are the specifications for the application. I have split the specification
             a user should not be allowed to sign up to attend an event they are hosting
             you do not need to allow users to unregister for an event in this project
 
-## Views (Templates)
+### Views (Templates)
 
     A base template must be created and extended by all other templates
     Templates need to be created for the following routes:
