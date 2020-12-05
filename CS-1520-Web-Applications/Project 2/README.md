@@ -1,7 +1,8 @@
-Overview
+## Overview
 
 In this project, you will get experience working with JavaScript and the DOM by creating a digital bingo card using JavaScript and the DOM. Players will be able to start a new game with either a random card or by entering a card as a string. The digital bingo card will also keep track of the players wins and losses in local storage.
-About Bingo
+
+## About Bingo
 
     Every player gets at least one bingo card.
     The format of a bingo card is as follows:
@@ -10,7 +11,7 @@ About Bingo
         Each column is defined as follows:
             B contains 5 numbers between 1 and 15 with no duplicate numbers.
             I contains 5 numbers between 16 and 30 with no duplicate numbers.
-            N contains 4 numbers between 31 and 45 with no duplicate numbers. In addition to the numbers, the third item in the list is a free space. The player can automatically mark off the free space. You can designate the free space however you would like on your board.
+            N contains 4 numbers between 31 and 45 with no duplicate numbers. In addition to the numbers, the third item in the list is a free space. The player can                      automatically mark off the free space. You can designate the free space however you would like on your board.
             G contains 5 numbers between 46 and 60 with no duplicate numbers.
             O contains 5 numbers between 61 and 75 with no duplicate numbers.
         Example: https://commons.wikimedia.org/wiki/File:Bingo_card_-_02.jpg (Links to an external site.)
@@ -18,15 +19,15 @@ About Bingo
     If a player has a square with the number 5 in the B column, they will mark it off.
     A player wins when they have 5 marked squares in a row horizontally, vertically or diagonally. When they win, they shout "BINGO!"
 
-Required Packages
+## Required Packages
 
     Google Chrome (All grading will be done in Google Chrome, so make sure your digital bingo card works in Google Chrome.
     This project is to be done using vanilla JavaScript with the standard library. This means that you cannot use external libraries like jQuery.
 
-Specification
+## Specification
 
 Below are the specifications for the application. I split the specification into UI elements and Events. Under UI Elements, I will list what needs to be part of the player interface. Under Events, I will list what should be done when the different UI elements are clicked on.
-UI Elements
+### UI Elements
 
     A place to add the bingo card to the DOM when it has been generated to allow it to be displayed.
     The following buttons. I will use the names below when referring to these buttons in the rest of the specification. You can name these buttons whatever you want as long as its clear what they do.
@@ -36,7 +37,7 @@ UI Elements
         i-lost: end the game because the player lost
     A score board showing the players record of wins and losses.
 
-Events
+### Events
 
     When the page first loads, the player's total wins and losses are loaded from localStorage and displayed to the player in the scoreboard. The new-game-random and new-game-specified buttons are displayed. The i-won and i-lost buttons are hidden.
     When the player clicks on new-game-random, a random bingo card should be generated and displayed following the card format under 'About Bingo'.
