@@ -1,4 +1,4 @@
-Overview
+## Overview
 
 In this project, you will get experience working with AJAJ and JSON by creating a website to host and manage multiple chat rooms.
 Required Packages
@@ -10,7 +10,7 @@ Required Packages
     This project is to be done using vanilla JavaScript with the standard library. This means that you cannot use external libraries like jQuery.
     You can represent all server-side data as Python data structures, you DO NOT need to use SQLAlchemy. This means your project's data does not need to survive restarting the app.
 
-Specification
+## Specification
 
 Project 1 and Project 2 focused on the server-side and client-side respectively. Because this, I broke the project specifications into the various parts of what makes up a server-side and client-side application. Project 3 is an application that will have a dynamic server-side and client-side and will contain parts of the server-side, controller and views, the client-side, UI elements and Events, with AJAJ and polling bridging the two.
 
