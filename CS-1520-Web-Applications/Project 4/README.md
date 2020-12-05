@@ -1,5 +1,5 @@
 
-Overview
+## Overview
 
 This Final Project will incorporate topics from the beginning of the term through ECMAScript. You will be building a RESTful budgeting application where a user can sign up and keep track of monthly budget categories and purchases in each of those categories. The app will also use functional programming to perform basic budget analysis in order to let the user know how much money they have left in a category for the month or if they have overspent.
 Required Packages
@@ -13,7 +13,7 @@ Required Packages
     This project is to be done using vanilla JavaScript with the standard library. This means that you cannot use external libraries like jQuery or React.
         You are free to use either the Fetch API or XMLHttpRequest objects to implement AJAJ.
         
-Specification
+## Specification
 
     You must build a RESTful API for accessing your budget category and purchase resources.
         For budget categories, you must implement
