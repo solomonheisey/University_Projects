@@ -31,7 +31,12 @@ public class SortedCollection {
 				lowerPointer = i;
 
 		//saves smallest number for output and removes it from the collection
-		int lowestNum = collection.get(lowerPointer);
+		int lowestNum;
+		try{
+			lowestNum = collection.get(lowerPointer);
+		} catch (IndexOutOfBoundsException e) {
+			throw new NoSuchElementException();
+		}
 		collection.remove(lowerPointer);
 
 		return lowestNum;
