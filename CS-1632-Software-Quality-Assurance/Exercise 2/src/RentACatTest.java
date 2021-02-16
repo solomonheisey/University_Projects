@@ -79,7 +79,7 @@ public class RentACatTest {
 
 	@Test
 	public void testGetCatNullNumCats0(){
-		assertNull(r.getCat(2));
+		r.getCat(2);
 	}
 
 	/**
