@@ -1,5 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,13 +36,25 @@ public class RentACatTest {
 		r = RentACat.createInstance();
 
 		// 2. Create a mock Cat with ID 1 and name "Jennyanydots", assign to c1
-		// TODO: Fill in
+		c1 = mock(Cat.class);
+
+		//stubbing
+		when(c1.getName()).thenReturn("Jennyanydots");
+		when(c1.getId()).thenReturn(1);
 		
 		// 3. Create a mock Cat with ID 2 and name "Old Deuteronomy", assign to c2
-		// TODO: Fill in
+		c2 = mock(Cat.class);
+
+		//stubbing
+		when(c1.getName()).thenReturn("Old Deuteronomy");
+		when(c1.getId()).thenReturn(2);
 
 		// 4. Create a mock Cat with ID 3 and name "Mistoffelees", assign to c3
-		// TODO: Fill in
+		c3 = mock(Cat.class);
+
+		//stubbing
+		when(c1.getName()).thenReturn("Mistoffelees");
+		when(c1.getId()).thenReturn(3);
 		
 		// Hint: You will have to stub the mocked Cats to make them behave as if the ID
 		// is 1 and name is "Jennyanydots", etc.
@@ -64,8 +78,8 @@ public class RentACatTest {
 	 */
 
 	@Test
-	public void testGetCatNullNumCats0() {
-		// TODO
+	public void testGetCatNullNumCats0(){
+		assertNull(r.getCat(2));
 	}
 
 	/**
