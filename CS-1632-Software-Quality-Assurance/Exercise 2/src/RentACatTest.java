@@ -80,7 +80,12 @@ public class RentACatTest {
 	@Test
 	public void testGetCatNullNumCats0(){
 		//Preconditions
-		assertNull(r.getCat(2));
+
+		//Execution Steps
+		Cat c = r.getCat(2);
+
+		//Postconditions
+		assertNull(c);
 	}
 
 	/**
