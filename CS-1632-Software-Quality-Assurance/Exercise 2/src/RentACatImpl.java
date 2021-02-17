@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class RentACatImpl implements RentACat {
 
-	public ArrayList<Cat> cats = new ArrayList<Cat>();
+	public ArrayList<Cat> cats = new ArrayList<>();
 
 	/**
 	 * Return a cat. This should call the .returnCat() method on the cat for the
@@ -16,7 +16,10 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean returnCat(int id) {
-		// TODO
+		if(catExists(id) && getCat(id).getRented()){
+			getCat(id).returnCat();
+			return true;
+		}
 		return false;
 	}
 
@@ -31,7 +34,10 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean rentCat(int id) {
-		// TODO
+		if (catExists(id) && !getCat(id).getRented()) {
+			getCat(id).rentCat();
+			return true;
+		}
 		return false;
 	}
 
@@ -46,8 +52,10 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public String listCats() {
-		// TODO
-		return "WRITE CODE FOR THIS";
+		StringBuilder sb = new StringBuilder();
+		for (Cat cat : cats)
+			sb.append("ID ").append(cat.getId()).append(". ").append(cat.getName()).append("\n");
+		return sb.toString();
 	}
 
 	/**
@@ -60,8 +68,8 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean catExists(int id) {
-		// TODO
-		return false;
+		Cat tempCat = getCat(id);
+		return tempCat != null;
 	}
 
 	/**
