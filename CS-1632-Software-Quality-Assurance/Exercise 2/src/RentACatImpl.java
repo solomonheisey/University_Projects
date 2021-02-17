@@ -54,7 +54,9 @@ public class RentACatImpl implements RentACat {
 	public String listCats() {
 		StringBuilder sb = new StringBuilder();
 		for (Cat cat : cats)
-			sb.append("ID ").append(cat.getId()).append(". ").append(cat.getName()).append("\n");
+			if(!cat.getRented())
+				sb.append(cat.toString()).append("\n");
+				//sb.append("ID ").append(cat.getId()).append(". ").append(cat.getName()).append("\n");
 		return sb.toString();
 	}
 
