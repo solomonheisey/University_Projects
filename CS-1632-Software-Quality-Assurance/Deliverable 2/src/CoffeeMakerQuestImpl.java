@@ -1,11 +1,17 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 
 	// TODO: Add more member variables and methods as needed.
-	
+	ArrayList<Room> cmq;
+	Player player;
+	Room currRoom;
+	Room northRoom;
+	int currRoomIndex;
+
 	CoffeeMakerQuestImpl() {
-		// TODO
+		cmq = new ArrayList<>();
 	}
 
 	/**
@@ -24,7 +30,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @param p the player
 	 */
 	public void setPlayer(Player p) {
-		// TODO
+		player = p;
 	}
 	
 	/**
@@ -35,8 +41,13 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return true if successful, false otherwise
 	 */
 	public boolean addFirstRoom(Room room) {
-		// TODO
-		return false;
+		boolean isSuccessful = false;
+		if ( (room != null) && (cmq.isEmpty()) ){
+			cmq.add(room);
+			currRoomIndex = 0;
+			isSuccessful = true;
+		}
+		return isSuccessful;
 	}
 
 	/**
@@ -55,8 +66,36 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return true if successful, false otherwise
 	 */
 	public boolean addRoomAtNorth(Room room, String northDoor, String southDoor) {
-		// TODO
-		return false;
+		boolean isSuccessful = false;
+		if(room == null || northDoor == null || southDoor == null) {
+		} else if (cmq.isEmpty()){
+		} else {
+			boolean isValid = true;
+			ListIterator<Room> listItr = cmq.listIterator();
+			Room nextRoom = null;
+			while(listItr.hasNext()) {
+				//Checks if the room being passed to the method has an adjective
+				//or furnishing matching an already existing room
+				nextRoom = listItr.next();
+				if (nextRoom.getAdjective().equalsIgnoreCase(room.getAdjective()) ||
+						nextRoom.getFurnishing().equalsIgnoreCase(room.getFurnishing())) {
+					isValid = false;
+				}
+			}
+			//The passed room is unique
+			if(isValid){
+				//Adds new room
+				Room newRoom = room;
+				newRoom.setSouthDoor(southDoor);
+				cmq.add(newRoom);
+
+				//Updates northern-most room
+				nextRoom.setNorthDoor(northDoor);
+
+				isSuccessful = true;
+			}
+		}
+		return isSuccessful;
 	}
 
 	/**
@@ -89,8 +128,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return comamnd prompt string
 	 */
 	public String getInstructionsString() {
-		// TODO
-		return "";
+		return "INSTRUCTIONS (N,S,L,I,D,H) > ";
 	}
 	
 	/**
