@@ -151,7 +151,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return comamnd prompt string
 	 */
 	public String getInstructionsString() {
-		return "INSTRUCTIONS (N,S,L,I,D,H) > ";
+		return " INSTRUCTIONS (N,S,L,I,D,H) > ";
 	}
 	
 	/**
@@ -210,7 +210,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 							message = "There might be something here...\nYou found some caffeinated coffee!\n";
 							break;
 						default:
-							message = "You don't see anything out of the ordinary\n";
+							message = "You don't see anything out of the ordinary.\n";
 					}
 					break;
 				case 'I':
@@ -219,8 +219,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 				case 'D':
 					if(isGameOver()){
 						//All Items
-						message = "You have a cup of delicious coffee.\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the beverage and are ready to study!\n"+
-									"You win!\n";
+						message = player.getInventoryString() + "\nYou drink the beverage and are ready to study!\nYou win!\n";
 					} else {
 						boolean coffee = player.checkCoffee();
 						boolean cream = player.checkCream();
@@ -228,37 +227,31 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 
 						//No Items
 						if(!coffee && !cream && !sugar)
-							message = "YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n";
+							message = player.getInventoryString() + "\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n";
 
 						//Coffee and Cream
 						else if(coffee && cream && !sugar)
-							message = "Without sugar, the coffee is too bitter. You cannot study.\n" +
-									"You lose!\n";
+							message = player.getInventoryString() + "\nWithout sugar, the coffee is too bitter. You cannot study.\nYou lose!\n";
 
 						//Coffee
 						else if(coffee && !cream && !sugar)
-							message = "Without cream, you get an ulcer and cannot study.\n"+
-									"You lose!\n";
+							message = player.getInventoryString() + "\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n";
 
 						//Cream
 						else if(!coffee && cream && !sugar)
-							message = "You drink the cream, but without caffeine, you cannot study.\n"+
-									"You lose!\n";
+							message = player.getInventoryString() + "\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n";
 
 						//Sugar
 						else if(!coffee && !cream && sugar)
-							message = "You eat the sugar, but without caffeine, you cannot study.\n"+
-									"You lose!\n";
+							message = player.getInventoryString() + "\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n";
 
 						//Cream and Sugar
 						else if(!coffee && cream && sugar)
-							message = "You drink the sweetened cream, but without caffeine you cannot study.\n"+
-									"You lose.\n";
+							message = player.getInventoryString() + "\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose.\n";
 
 						//Coffee and Sugar
 						else
-							message = "Without cream, you get an ulcer and cannot study.\n"+
-									"You lose!\n";
+							message = player.getInventoryString() + "\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n";
 					}
 					break;
 
@@ -267,7 +260,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 							  "S - Go south\n" +
 							"L - Look and collect any items in the room\n"+
 							"I - Show inventory of items collected\n" +
-							"D - Drink coffee made from items in inventory";
+							"D - Drink coffee made from items in inventory\n";
 					break;
 				default:
 					message = "What?";
