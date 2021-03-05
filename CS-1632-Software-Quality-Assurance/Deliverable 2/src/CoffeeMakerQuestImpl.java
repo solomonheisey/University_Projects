@@ -247,7 +247,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 
 						//Cream and Sugar
 						else if(!coffee && cream && sugar)
-							message = player.getInventoryString() + "\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose.\n";
+							message = player.getInventoryString() + "\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose!\n";
 
 						//Coffee and Sugar
 						else
@@ -260,7 +260,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 							  "S - Go south\n" +
 							"L - Look and collect any items in the room\n"+
 							"I - Show inventory of items collected\n" +
-							"D - Drink coffee made from items in inventory\n";
+							"D - Drink coffee made from items in inventory";
 					break;
 				default:
 					message = "What?";
