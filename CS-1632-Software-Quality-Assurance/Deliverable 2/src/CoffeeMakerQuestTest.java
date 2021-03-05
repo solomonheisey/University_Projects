@@ -46,7 +46,7 @@ public class CoffeeMakerQuestTest {
 		room2 = mock(Room.class);
 		when(room2.getAdjective()).thenReturn("Funny");
 		when(room2.getFurnishing()).thenReturn("Sad record player");
-
+		when(room2.getItem()).thenReturn(Item.NONE);
 
 		room3 = mock(Room.class);
 		when(room3.getAdjective()).thenReturn("Refinanced");
@@ -56,10 +56,12 @@ public class CoffeeMakerQuestTest {
 		room4 = mock(Room.class);
 		when(room4.getAdjective()).thenReturn("Dumb");
 		when(room4.getFurnishing()).thenReturn("Flat energy drink");
+		when(room4.getItem()).thenReturn(Item.NONE);
 
 		room5 = mock(Room.class);
 		when(room5.getAdjective()).thenReturn("Bloodthirsty");
 		when(room5.getFurnishing()).thenReturn("Beautiful bag of money");
+		when(room5.getItem()).thenReturn(Item.NONE);
 
 		room6 = mock(Room.class);
 		when(room6.getAdjective()).thenReturn("Rough");
@@ -215,11 +217,13 @@ public class CoffeeMakerQuestTest {
 	public void testProcessCommandI() {
 		//Preconditions
 
+
 		//Execution steps
+		when(player.getInventoryString()).thenReturn("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n");
 		String output = cmq.processCommand("I");
 
 		//Postconditions
-		assertEquals(output, "YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n");
+		assertEquals("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n", output);
 	}
 	
 	/**
@@ -233,12 +237,13 @@ public class CoffeeMakerQuestTest {
 	@Test
 	public void testProcessCommandLCream() {
 		//Preconditions
+		cmq.setCurrentRoom(room1);
 
 		//Execution steps
 		String output = cmq.processCommand("l");
 
 		//Postconditions
-		assertEquals(output, "There might be something here...\nYou found some creamy cream!\n");
+		assertEquals("There might be something here...\nYou found some creamy cream!\n", output);
 		Mockito.verify(player, times(1)).addItem(Item.CREAM);
 	}
 	
@@ -261,8 +266,8 @@ public class CoffeeMakerQuestTest {
 		Room output2 = cmq.getCurrentRoom();
 
 		//Postconditions
-		assertEquals(output1, "");
-		assertSame(output2, room5);
+		assertEquals("", output1);
+		assertSame(room5, output2);
 	}
 	
 	/**
@@ -277,14 +282,14 @@ public class CoffeeMakerQuestTest {
 	@Test
 	public void testProcessCommandS() {
 		//Preconditions
-		cmq.processCommand("s");
+		cmq.setCurrentRoom(room1);
 
 		//Execution steps
 		String output1 = cmq.processCommand("s");
 		Room output2 = cmq.getCurrentRoom();
 
 		//Postconditions
-		assertEquals(output1,"A door in that direction does not exist.\n");
+		assertEquals(output1, "A door in that direction does not exist.\n");
 		assertSame(output2, room1);
 	}
 	
@@ -305,8 +310,8 @@ public class CoffeeMakerQuestTest {
 		boolean output2 = cmq.isGameOver();
 
 		//Postconditions
-		assertEquals(output1, "YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n");
-		assertTrue(output2);
+		assertEquals("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n", output1);
+		assertFalse(output2);
 	}
 	
 	/**
@@ -329,7 +334,7 @@ public class CoffeeMakerQuestTest {
 		boolean output2 = cmq.isGameOver();
 
 		//Postconditions
-		assertEquals(output1,"You have a cup of delicious coffee.\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the beverage and are ready to study!\nYou win!\n");
+		assertEquals("You have a cup of delicious coffee.\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the beverage and are ready to study!\nYou win!\n", output1);
 		assertTrue(output2);
 	}
 	

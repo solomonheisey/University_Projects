@@ -7,7 +7,6 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	ArrayList<Room> cmq;
 	Player player;
 	Room currRoom;
-	Room northRoom;
 	int currRoomIndex;
 
 	CoffeeMakerQuestImpl() {
@@ -20,8 +19,9 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return true if successful, false otherwise
 	 */
 	public boolean isGameOver() {
-		// TODO
-		return false;
+		boolean isGameOver;
+		isGameOver = player.checkCoffee() && player.checkCream() & player.checkSugar();
+		return isGameOver;
 	}
 
 	/**
@@ -44,7 +44,6 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 		boolean isSuccessful = false;
 		if ( (room != null) && (cmq.isEmpty()) ){
 			cmq.add(room);
-			currRoomIndex = 0;
 			isSuccessful = true;
 		}
 		return isSuccessful;
@@ -71,12 +70,12 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 		} else if (cmq.isEmpty()){
 		} else {
 			boolean isValid = true;
-			ListIterator<Room> listItr = cmq.listIterator();
+			ListIterator<Room> tempListItr = cmq.listIterator();
 			Room nextRoom = null;
-			while(listItr.hasNext()) {
+			while(tempListItr.hasNext()) {
 				//Checks if the room being passed to the method has an adjective
 				//or furnishing matching an already existing room
-				nextRoom = listItr.next();
+				nextRoom = tempListItr.next();
 				if (nextRoom.getAdjective().equalsIgnoreCase(room.getAdjective()) ||
 						nextRoom.getFurnishing().equalsIgnoreCase(room.getFurnishing())) {
 					isValid = false;
@@ -105,8 +104,11 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return room player is in, or null if not yet initialized
 	 */ 
 	public Room getCurrentRoom() {
-		// TODO
-		return null;
+		Room returnedRoom = null;
+		if (currRoom != null){
+			returnedRoom = currRoom;
+		}
+		return returnedRoom;
 	}
 	
 	/**
@@ -117,8 +119,29 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return true if successful, false otherwise
 	 */
 	public boolean setCurrentRoom(Room room) {
-		// TODO
-		return false;
+		boolean isSuccessful = false;
+		if (room != null) {
+			boolean isRoomValid = false;
+			ListIterator<Room> tempListItr = cmq.listIterator();
+			int tempCurrRoomIndex = 0;
+
+			//Checks if the room exists in the game
+			while (!isRoomValid){
+				if(tempListItr.hasNext()){
+					isRoomValid = (room == tempListItr.next());
+					tempCurrRoomIndex++;
+				} else {
+					break;
+				}
+			}
+			//The room exists in the game
+			if (isRoomValid){
+				currRoom = room;
+				currRoomIndex = tempCurrRoomIndex;
+				isSuccessful = true;
+			}
+		}
+		return isSuccessful;
 	}
 	
 	/**
@@ -146,8 +169,111 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return response string for the command
 	 */
 	public String processCommand(String cmd) {
-		// TODO
-		return "";
+		String message = "";
+
+		if(cmd.length() != 1)
+			message = "What?";
+		else {
+			char command = cmd.toUpperCase().charAt(0);
+
+			switch(command) {
+				case 'N':
+					if (currRoomIndex < cmq.size()-1) {
+						//Moves player forward one room
+						setCurrentRoom(cmq.get(currRoomIndex));
+					} else {
+						message = "A door in that direction does not exist.\n";
+					}
+					break;
+
+				case 'S':
+					if (currRoomIndex > 1) {
+						//Moves player back one room
+						setCurrentRoom(cmq.get(currRoomIndex-2));
+					} else {
+						message = "A door in that direction does not exist.\n";
+					}
+					break;
+
+				case 'L':
+					Item item = currRoom.getItem();
+					player.addItem(item);
+
+					switch(item) {
+						case CREAM:
+							message = "There might be something here...\nYou found some creamy cream!\n";
+							break;
+						case SUGAR:
+							message = "There might be something here...\nYou found some sweet sugar!\n";
+							break;
+						case COFFEE:
+							message = "There might be something here...\nYou found some caffeinated coffee!\n";
+							break;
+						default:
+							message = "You don't see anything out of the ordinary\n";
+					}
+					break;
+				case 'I':
+					message = player.getInventoryString();
+					break;
+				case 'D':
+					if(isGameOver()){
+						//All Items
+						message = "You have a cup of delicious coffee.\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the beverage and are ready to study!\n"+
+									"You win!\n";
+					} else {
+						boolean coffee = player.checkCoffee();
+						boolean cream = player.checkCream();
+						boolean sugar = player.checkSugar();
+
+						//No Items
+						if(!coffee && !cream && !sugar)
+							message = "YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n";
+
+						//Coffee and Cream
+						else if(coffee && cream && !sugar)
+							message = "Without sugar, the coffee is too bitter. You cannot study.\n" +
+									"You lose!\n";
+
+						//Coffee
+						else if(coffee && !cream && !sugar)
+							message = "Without cream, you get an ulcer and cannot study.\n"+
+									"You lose!\n";
+
+						//Cream
+						else if(!coffee && cream && !sugar)
+							message = "You drink the cream, but without caffeine, you cannot study.\n"+
+									"You lose!\n";
+
+						//Sugar
+						else if(!coffee && !cream && sugar)
+							message = "You eat the sugar, but without caffeine, you cannot study.\n"+
+									"You lose!\n";
+
+						//Cream and Sugar
+						else if(!coffee && cream && sugar)
+							message = "You drink the sweetened cream, but without caffeine you cannot study.\n"+
+									"You lose.\n";
+
+						//Coffee and Sugar
+						else
+							message = "Without cream, you get an ulcer and cannot study.\n"+
+									"You lose!\n";
+					}
+					break;
+
+				case 'H':
+					message = "N - Go north\n" +
+							  "S - Go south\n" +
+							"L - Look and collect any items in the room\n"+
+							"I - Show inventory of items collected\n" +
+							"D - Drink coffee made from items in inventory";
+					break;
+				default:
+					message = "What?";
+			}
+		}
+		return message;
 	}
 	
 }
