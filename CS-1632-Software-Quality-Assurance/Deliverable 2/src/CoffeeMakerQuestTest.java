@@ -452,12 +452,12 @@ public class CoffeeMakerQuestTest {
 		when(player.checkCream()).thenReturn(true);
 
 		//Execution steps
-		when(player.getInventoryString()).thenReturn("\nYOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n");
+		when(player.getInventoryString()).thenReturn("YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n");
 		String output1 = cmq.processCommand("D");
 		boolean output2 = cmq.isGameOver();
 
 		//Postconditions
-		assertEquals("\nYOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n", output1);
+		assertEquals("YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n", output1);
 		assertFalse(output2);
 	}
 
@@ -477,12 +477,12 @@ public class CoffeeMakerQuestTest {
 		when(player.checkCream()).thenReturn(false);
 
 		//Execution steps
-		when(player.getInventoryString()).thenReturn("\nYOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n");
+		when(player.getInventoryString()).thenReturn("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n");
 		String output1 = cmq.processCommand("D");
 		boolean output2 = cmq.isGameOver();
 
 		//Postconditions
-		assertEquals("\nYOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n", output1);
+		assertEquals("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n", output1);
 		assertFalse(output2);
 	}
 }
