@@ -270,7 +270,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 							  "S - Go south\n" +
 							"L - Look and collect any items in the room\n"+
 							"I - Show inventory of items collected\n" +
-							"D - Drink coffee made from items in inventory";
+							"D - Drink coffee made from items in inventory\n";
 					break;
 				default:
 					message = "What?";

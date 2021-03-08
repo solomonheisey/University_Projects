@@ -362,7 +362,7 @@ public class CoffeeMakerQuestTest {
 				"S - Go south\n" +
 				"L - Look and collect any items in the room\n"+
 				"I - Show inventory of items collected\n" +
-				"D - Drink coffee made from items in inventory", output);
+				"D - Drink coffee made from items in inventory\n", output);
 	}
 
 	/**
