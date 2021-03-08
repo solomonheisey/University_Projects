@@ -57,7 +57,7 @@ public class RedditCatsTest {
       String attribute = element.getAttribute("href");
       vars.put("x", attribute);
     }
-    assertEquals(vars.get("x").toString(), "https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2Fr%2Fcats");
+    assertEquals(vars.get("x").toString(), "https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2Fr%2Fcats%2F");
   }
   @Test
   public void fUNRULE3() {
