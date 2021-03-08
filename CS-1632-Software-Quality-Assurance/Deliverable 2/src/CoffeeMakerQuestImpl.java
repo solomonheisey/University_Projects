@@ -42,11 +42,21 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 */
 	public boolean addFirstRoom(Room room) {
 		boolean isSuccessful = false;
-		if ( (room != null) && (cmq.isEmpty()) ){
+		if ( isRoomValid(room) && (cmq.isEmpty()) ){
 			cmq.add(room);
 			isSuccessful = true;
 		}
 		return isSuccessful;
+	}
+
+	/**
+	 * If room is null then false is returned, true otherwise.
+	 *
+	 * @param room the room being check if it's null
+	 * @return true if room is not null, false otherwise
+	 */
+	private boolean isRoomValid(Room room) {
+		return room != null;
 	}
 
 	/**

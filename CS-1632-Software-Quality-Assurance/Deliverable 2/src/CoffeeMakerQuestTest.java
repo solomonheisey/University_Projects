@@ -3,6 +3,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.*;
 import org.mockito.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import static org.mockito.Mockito.*;
 
 public class CoffeeMakerQuestTest {
@@ -484,5 +488,30 @@ public class CoffeeMakerQuestTest {
 		//Postconditions
 		assertEquals("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n", output1);
 		assertFalse(output2);
+	}
+
+	/**
+	 * Test case for boolean isRoomValid(null)
+	 * Preconditions: isRoomValid declared method has been called and is accessible.
+	 * 				Room r is defined as null.
+	 * 	Execution steps: Call m.invoke(new CoffeeMakerQuestImpl(), r).
+	 * 	Postconditions: Return value of m.invoke(new CoffeeMakerQuestImpl(), r) is False.
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 *
+	 */
+	@Test
+	public void testInvalidRoom() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		//Preconditions
+		Method m = CoffeeMakerQuestImpl.class.getDeclaredMethod("isRoomValid", Room.class);
+		m.setAccessible(true);
+		Room r = null;
+
+		//Executions steps
+		Object ret = m.invoke(new CoffeeMakerQuestImpl(), r);
+
+		//Postconditions
+		assertFalse((Boolean)ret);
 	}
 }
