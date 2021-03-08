@@ -6,6 +6,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	// TODO: Add more member variables and methods as needed.
 	ArrayList<Room> cmq;
 	Player player;
+	boolean didPlayerDrink = false;
 	Room currRoom;
 	int currRoomIndex;
 
@@ -19,9 +20,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 * @return true if successful, false otherwise
 	 */
 	public boolean isGameOver() {
-		boolean isGameOver;
-		isGameOver = player.checkCoffee() && player.checkCream() && player.checkSugar();
-		return isGameOver;
+		return didPlayerDrink;
 	}
 
 	/**
@@ -227,42 +226,43 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 					message = player.getInventoryString();
 					break;
 				case 'D':
-					if(isGameOver()){
-						//All Items
+					didPlayerDrink = true;
+					boolean coffee = player.checkCoffee();
+					boolean cream = player.checkCream();
+					boolean sugar = player.checkSugar();
+
+					//All items
+					if(coffee && cream && sugar)
 						message = player.getInventoryString() + "\nYou drink the beverage and are ready to study!\nYou win!\n";
-					} else {
-						boolean coffee = player.checkCoffee();
-						boolean cream = player.checkCream();
-						boolean sugar = player.checkSugar();
 
-						//No Items
-						if(!coffee && !cream && !sugar)
-							message = player.getInventoryString() + "\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n";
+					//No items
+					else if (!coffee && !cream && !sugar)
+						message = player.getInventoryString() + "\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n";
 
-						//Coffee and Cream
-						else if(coffee && cream && !sugar)
-							message = player.getInventoryString() + "\nWithout sugar, the coffee is too bitter. You cannot study.\nYou lose!\n";
+					//Coffee and Cream
+					else if(coffee && cream && !sugar)
+						message = player.getInventoryString() + "\nWithout sugar, the coffee is too bitter. You cannot study.\nYou lose!\n";
 
-						//Coffee
-						else if(coffee && !cream && !sugar)
-							message = player.getInventoryString() + "\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n";
+					//Coffee
+					else if(coffee && !cream && !sugar)
+						message = player.getInventoryString() + "\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n";
 
-						//Cream
-						else if(!coffee && cream && !sugar)
-							message = player.getInventoryString() + "\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n";
+					//Cream
+					else if(!coffee && cream && !sugar)
+						message = player.getInventoryString() + "\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n";
 
-						//Sugar
-						else if(!coffee && !cream && sugar)
-							message = player.getInventoryString() + "\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n";
+					//Sugar
+					else if(!coffee && !cream && sugar)
+						message = player.getInventoryString() + "\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n";
 
-						//Cream and Sugar
-						else if(!coffee && cream && sugar)
-							message = player.getInventoryString() + "\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose!\n";
+					//Cream and Sugar
+					else if(!coffee && cream && sugar)
+						message = player.getInventoryString() + "\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose!\n";
 
-						//Coffee and Sugar
-						else
-							message = player.getInventoryString() + "\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n";
-					}
+					//Coffee and Sugar
+					else
+						message = player.getInventoryString() + "\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n";
+
 					break;
 
 				case 'H':
@@ -278,5 +278,4 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 		}
 		return message;
 	}
-	
 }

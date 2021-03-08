@@ -319,7 +319,7 @@ public class CoffeeMakerQuestTest {
 
 		//Postconditions
 		assertEquals("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n", output1);
-		assertFalse(output2);
+		assertTrue(output2);
 	}
 	
 	/**
@@ -390,7 +390,7 @@ public class CoffeeMakerQuestTest {
 
 		//Postconditions
 		assertEquals("You have a cup of delicious coffee.\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nWithout sugar, the coffee is too bitter. You cannot study.\nYou lose!\n", output1);
-		assertFalse(output2);
+		assertTrue(output2);
 	}
 
 	/**
@@ -415,7 +415,7 @@ public class CoffeeMakerQuestTest {
 
 		//Postconditions
 		assertEquals("YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose!\n", output1);
-		assertFalse(output2);
+		assertTrue(output2);
 	}
 
 	/**
@@ -440,7 +440,7 @@ public class CoffeeMakerQuestTest {
 
 		//Postconditions
 		assertEquals("You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n", output1);
-		assertFalse(output2);
+		assertTrue(output2);
 	}
 
 	/**
@@ -465,7 +465,7 @@ public class CoffeeMakerQuestTest {
 
 		//Postconditions
 		assertEquals("YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n", output1);
-		assertFalse(output2);
+		assertTrue(output2);
 	}
 
 	/**
@@ -490,7 +490,7 @@ public class CoffeeMakerQuestTest {
 
 		//Postconditions
 		assertEquals("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n", output1);
-		assertFalse(output2);
+		assertTrue(output2);
 	}
 
 	/**
