@@ -20,7 +20,7 @@ public class CoffeeMakerQuestImpl implements CoffeeMakerQuest {
 	 */
 	public boolean isGameOver() {
 		boolean isGameOver;
-		isGameOver = player.checkCoffee() && player.checkCream() & player.checkSugar();
+		isGameOver = player.checkCoffee() && player.checkCream() && player.checkSugar();
 		return isGameOver;
 	}
 
