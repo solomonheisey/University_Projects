@@ -52,8 +52,9 @@ public class RedditCatsTest {
     {
       WebElement element = driver.findElement(By.linkText("Sign Up"));
       String attribute = element.getAttribute("href");
-      vars.put("https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2Fr%2Fcats%2F", attribute);
+      vars.put("x", attribute);
     }
+    assertEquals(vars.get("x").toString(), "https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2Fr%2Fcats");
   }
   @Test
   public void fUNRULE3() {

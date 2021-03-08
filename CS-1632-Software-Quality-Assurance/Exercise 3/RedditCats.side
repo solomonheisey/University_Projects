@@ -60,7 +60,14 @@
       "command": "storeAttribute",
       "target": "linkText=Sign Up@href",
       "targets": [],
-      "value": "https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2Fr%2Fcats%2F"
+      "value": "x"
+    }, {
+      "id": "dec6d9e3-f29b-4fb7-af2e-13be61283b26",
+      "comment": "",
+      "command": "assert",
+      "target": "x",
+      "targets": [],
+      "value": "https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2Fr%2Fcats"
     }]
   }, {
     "id": "02ee42a2-c213-46f4-98f1-e174c7df38c3",
