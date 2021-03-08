@@ -308,6 +308,9 @@ public class CoffeeMakerQuestTest {
 	@Test
 	public void testProcessCommandDLose() {
 		//Preconditions
+		when(player.checkSugar()).thenReturn(false);
+		when(player.checkCoffee()).thenReturn(false);
+		when(player.checkCream()).thenReturn(false);
 
 		//Execution steps
 		when(player.getInventoryString()).thenReturn("YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n");
