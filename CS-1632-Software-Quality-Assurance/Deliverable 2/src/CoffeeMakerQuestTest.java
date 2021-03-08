@@ -28,8 +28,6 @@ public class CoffeeMakerQuestTest {
 		
 		// 1. Create the Coffee Maker Quest object and assign to cmq.
 		cmq = CoffeeMakerQuest.createInstance();
-
-		// TODO: 2. Create a mock Player and assign to player and call cmq.setPlayer(player).
 		// Player should not have any items (no coffee, no cream, no sugar)
 		player = mock(Player.class);
 
@@ -39,8 +37,6 @@ public class CoffeeMakerQuestTest {
 		when(player.checkCoffee()).thenReturn(false);
 
 		cmq.setPlayer(player);
-
-		// TODO: 3. Create mock Rooms and assign to room1, room2, ..., room6.
 		// Mimic the furnishings / adjectives / items of the rooms in the original Coffee Maker Quest.
 		room1 = mock(Room.class);
 		when(room1.getAdjective()).thenReturn("Small");
@@ -72,8 +68,7 @@ public class CoffeeMakerQuestTest {
 		when(room6.getFurnishing()).thenReturn("Perfect air hockey table");
 		when(room6.getItem()).thenReturn(Item.SUGAR);
 
-		// TODO: 4. Add the rooms created above to mimic the layout of the original Coffee Maker Quest.
-		cmq.addFirstRoom(room1);
+	cmq.addFirstRoom(room1);
 		cmq.addRoomAtNorth(room2, "Magenta", "Massive");
 		cmq.addRoomAtNorth(room3, "Beige", "Smart");
 		cmq.addRoomAtNorth(room4, "Dead", "Slim");
@@ -220,7 +215,6 @@ public class CoffeeMakerQuestTest {
 	@Test
 	public void testProcessCommandI() {
 		//Preconditions
-
 
 		//Execution steps
 		when(player.getInventoryString()).thenReturn("\nYOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n");
@@ -374,7 +368,7 @@ public class CoffeeMakerQuestTest {
 	 * Execution steps: Call cmq.processCommand("D").
 	 *                  Call cmq.isGameOver().
 	 * Postconditions: Return value of cmq.processCommand("D") is "You have a cup of delicious coffee.\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\nWithout sugar, the coffee is too bitter. You cannot study.\nYou lose!\n".
-	 *                 Return value of cmq.isGameOver() is false.
+	 *                 Return value of cmq.isGameOver() is true.
 	 */
 	@Test
 	public void testProcessCommandDCoffeeCream() {
@@ -399,7 +393,7 @@ public class CoffeeMakerQuestTest {
 	 * Execution steps: Call cmq.processCommand("D").
 	 *                  Call cmq.isGameOver().
 	 * Postconditions: Return value of cmq.processCommand("D") is "YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose!\n".
-	 *                 Return value of cmq.isGameOver() is false.
+	 *                 Return value of cmq.isGameOver() is true.
 	 */
 	@Test
 	public void testProcessCommandDCreamSugar() {
@@ -420,11 +414,36 @@ public class CoffeeMakerQuestTest {
 
 	/**
 	 * Test case for String processCommand("D").
+	 * Preconditions: Player has 2 items (coffee, sugar).
+	 * Execution steps: Call cmq.processCommand("D").
+	 *                  Call cmq.isGameOver().
+	 * Postconditions: Return value of cmq.processCommand("D") is "You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n".
+	 *                 Return value of cmq.isGameOver() is true.
+	 */
+	@Test
+	public void testProcessCommandDCoffeeSugar() {
+		//Preconditions
+		when(player.checkSugar()).thenReturn(true);
+		when(player.checkCoffee()).thenReturn(true);
+		when(player.checkCream()).thenReturn(false);
+
+		//Execution steps
+		when(player.getInventoryString()).thenReturn("You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n");
+		String output1 = cmq.processCommand("D");
+		boolean output2 = cmq.isGameOver();
+
+		//Postconditions
+		assertEquals("You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n", output1);
+		assertTrue(output2);
+	}
+
+	/**
+	 * Test case for String processCommand("D").
 	 * Preconditions: Player has 1 item (coffee).
 	 * Execution steps: Call cmq.processCommand("D").
 	 *                  Call cmq.isGameOver().
 	 * Postconditions: Return value of cmq.processCommand("D") is "You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n".
-	 *                 Return value of cmq.isGameOver() is false.
+	 *                 Return value of cmq.isGameOver() is true.
 	 */
 	@Test
 	public void testProcessCommandDCoffee() {
@@ -449,7 +468,7 @@ public class CoffeeMakerQuestTest {
 	 * Execution steps: Call cmq.processCommand("D").
 	 *                  Call cmq.isGameOver().
 	 * Postconditions: Return value of cmq.processCommand("D") is "YOU HAVE NO COFFEE!.\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!".
-	 *                 Return value of cmq.isGameOver() is false.
+	 *                 Return value of cmq.isGameOver() is true.
 	 */
 	@Test
 	public void testProcessCommandCream() {
@@ -474,7 +493,7 @@ public class CoffeeMakerQuestTest {
 	 * Execution steps: Call cmq.processCommand("D").
 	 *                  Call cmq.isGameOver().
 	 * Postconditions: Return value of cmq.processCommand("D") is "\nYOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n".
-	 *                 Return value of cmq.isGameOver() is false.
+	 *                 Return value of cmq.isGameOver() is true.
 	 */
 	@Test
 	public void testProcessCommandSugar() {
