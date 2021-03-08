@@ -22,6 +22,7 @@ import org.openqa.selenium.Keys;
 import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 public class RedditCatsTest {
   private WebDriver driver;
   private Map<String, Object> vars;
@@ -31,6 +32,7 @@ public class RedditCatsTest {
     driver = new FirefoxDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
+    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
   }
   @After
   public void tearDown() {
