@@ -1,14 +1,18 @@
-import java.util.*;
-import java.io.*;
-import java.lang.reflect.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-import org.junit.runner.RunWith;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
-import static org.junit.Assert.*;
-
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MonkeySimPinningTest {
