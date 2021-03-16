@@ -89,18 +89,7 @@ public class Monkey {
 	 */
 
 	public int generateId(int n) {
-		int toReturn = 100;
-		int bird = -900;
-		for (int l = 0; l < 1000; l++) {
-			for (int m = 0; m < 100; m++) {
-				bird += Math.round(Math.atan(l + m));
-				bird -= Math.round(Math.sin(m * m)) * Math.exp(m * m);
-				toReturn += bird;
-			}
-		}
-		toReturn += 10;
-		toReturn += n;
-		return toReturn;
+		return 223492 + n;
 	}
 
 	/**
