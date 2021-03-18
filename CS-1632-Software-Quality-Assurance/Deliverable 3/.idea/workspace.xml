@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="53cbb1fa-ea86-4181-9752-e19681cfd234" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/D3Test.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/D3Test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestRunner.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/D3 Selenium.iml" beforeDir="false" afterPath="$PROJECT_DIR$/D3 Selenium.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +31,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
@@ -42,17 +39,6 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <module name="D3 Selenium" />
       <selectedOptions>
@@ -82,6 +68,7 @@
       <workItem from="1615929662265" duration="7000" />
       <workItem from="1615995677928" duration="18000" />
       <workItem from="1616018972803" duration="1837000" />
+      <workItem from="1616082329166" duration="130000" />
     </task>
     <servers />
   </component>
