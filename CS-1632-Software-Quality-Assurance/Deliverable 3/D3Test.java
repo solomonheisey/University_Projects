@@ -124,7 +124,7 @@ public class D3Test{
   }
   @Test
   public void fUNLINKS() {
-    driver.get("https://cs1632.appspot.com//");
+    driver.get("https://cs1632.appspot.com/");
     {
       WebElement element = driver.findElement(By.linkText("CS1632 D3 Home"));
       String attribute = element.getAttribute("href");
