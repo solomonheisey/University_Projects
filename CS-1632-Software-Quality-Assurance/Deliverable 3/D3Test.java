@@ -122,4 +122,14 @@ public class D3Test{
     driver.findElement(By.cssSelector("input:nth-child(2)")).click();
     assertThat(driver.findElement(By.cssSelector("h2")).getText(), is("Fibonacci of 10 is 55!"));
   }
+  @Test
+  public void fUNLINKS() {
+    driver.get("https://cs1632.appspot.com//");
+    {
+      WebElement element = driver.findElement(By.linkText("CS1632 D3 Home"));
+      String attribute = element.getAttribute("href");
+      vars.put("x", attribute);
+    }
+    assertEquals(vars.get("x").toString(), "/");
+  }
 }
