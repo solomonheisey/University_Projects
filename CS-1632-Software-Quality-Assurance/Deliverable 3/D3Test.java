@@ -84,7 +84,7 @@ public class D3Test{
     assertThat(driver.findElement(By.cssSelector("h2")).getText(), is("Fibonacci of -100 is 1!"));
   }
   @Test
-  public void fUNHELLOTRAINING() {
+  public void fUNHELLOTRAILING() {
     driver.get("https://cs1632.appspot.com/hello/Jazzy");
     assertThat(driver.findElement(By.cssSelector("h2")).getText(), is("Hello CS1632, from Jazzy!"));
   }
