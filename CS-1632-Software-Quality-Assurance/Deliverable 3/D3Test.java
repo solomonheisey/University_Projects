@@ -130,6 +130,6 @@ public class D3Test{
       String attribute = element.getAttribute("href");
       vars.put("x", attribute);
     }
-    assertEquals(vars.get("x").toString(), "/");
+    assertEquals(vars.get("x").toString(), "https://cs1632.appspot.com/");
   }
 }
