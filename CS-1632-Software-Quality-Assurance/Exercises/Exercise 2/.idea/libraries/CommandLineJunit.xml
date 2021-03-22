@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="CommandLineJunit">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/CommandLineJunit/hamcrest-core-1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/CommandLineJunit/mockito-core-1.10.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/CommandLineJunit/objenesis-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/CommandLineJunit/junit-4.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
