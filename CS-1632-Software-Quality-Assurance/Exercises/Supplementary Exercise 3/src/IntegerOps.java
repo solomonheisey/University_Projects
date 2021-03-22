@@ -8,7 +8,9 @@ public class IntegerOps {
 	 * @return Sum of x and y, or 0 if integer overflow
 	 */
 	public static int add(int x, int y) {
-		// TODO: Fix bug!
+		long sum = (long)x + (long)y;
+		if (sum >= Integer.MAX_VALUE)
+			return 0;
 		return x + y;
 	}
 
@@ -21,7 +23,9 @@ public class IntegerOps {
 	 * @return Difference between x and y, or 0 if integer overflow
 	 */
 	public static int subtract(int x, int y) {
-		// TODO: Fix bug!
+		long difference = (long)x - (long)y;
+		if (difference >= Integer.MAX_VALUE)
+			return 0;
 		return x - y;
 	}
 }
