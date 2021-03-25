@@ -17,10 +17,8 @@ public class StringOpsTest {
 	 */
 	@Property(trials = 1000)
 	public void testEquals(@From(ABCStringGenerator.class) String s1, @From(ABCStringGenerator.class) String s2) {
-		System.out.println("testEquals s1='" + s1 + "', s2='" + s2 + "'");
-		if(s1.length() != s2.length()) {
+		if(s1.length() != s2.length())
 			assertFalse(StringOps.equals(s1, s2));
-		}
 	}
 
 	/**
@@ -32,7 +30,6 @@ public class StringOpsTest {
 	 */
 	@Property(trials = 1000)
 	public void testIsValidHTMLTrue(@From(ValidHTMLStringGenerator.class) String s) {
-		// System.out.println("testIsValidHTMLTrue s='" + s + "'");
 		assertTrue(StringOps.isValidHTML(s));
 	}
 }

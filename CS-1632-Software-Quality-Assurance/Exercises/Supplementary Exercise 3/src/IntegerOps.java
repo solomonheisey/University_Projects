@@ -9,7 +9,7 @@ public class IntegerOps {
 	 */
 	public static int add(int x, int y) {
 		long sum = (long)x + (long)y;
-		if (sum >= Integer.MAX_VALUE)
+		if (sum > Integer.MAX_VALUE)
 			return 0;
 		return x + y;
 	}
@@ -24,7 +24,7 @@ public class IntegerOps {
 	 */
 	public static int subtract(int x, int y) {
 		long difference = (long)x - (long)y;
-		if (difference >= Integer.MAX_VALUE)
+		if (difference > Integer.MAX_VALUE)
 			return 0;
 		return x - y;
 	}
