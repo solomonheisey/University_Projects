@@ -109,25 +109,29 @@ public class ValidHTMLStringGenerator extends Generator<String> {
 			return Collections.emptyList();
 
 		List<String> list = new ArrayList<>();
+		boolean found = false;
 		String shorter = "";
 		String shorter2 = "";
 
 		//Recursive case for <b></b>
 		for(int i = 0; i < larger.length(); i++)
-			if(larger.startsWith(("<b></b>"), i))
+			if(larger.startsWith(("<b></b>"), i) && !found) {
 				i += 7;
-			else
+				found = true;
+			} else
 				shorter += larger.charAt(i);
 
 		list.add(shorter);
 
 		//Recursive case for <i></i>
-		for(int i = 0; i < shorter.length(); i++)
-			if(shorter.startsWith(("<i></i>"), i))
+		found = false;
+		for(int i = 0; i < shorter.length(); i++) {
+			if (shorter.startsWith(("<i></i>"), i) && !found) {
+				found = true;
 				i += 7;
-			else
+			} else
 				shorter2 += shorter.charAt(i);
-
+		}
 		list.add(shorter2);
 		return list;
 	}
