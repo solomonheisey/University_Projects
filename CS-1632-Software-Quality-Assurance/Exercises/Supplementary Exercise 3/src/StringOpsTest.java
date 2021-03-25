@@ -30,6 +30,7 @@ public class StringOpsTest {
 	 */
 	@Property(trials = 1000)
 	public void testIsValidHTMLTrue(@From(ValidHTMLStringGenerator.class) String s) {
+		//System.out.println("testIsValidHTMLTrue s='" + s + "'");
 		assertTrue(StringOps.isValidHTML(s));
 	}
 }

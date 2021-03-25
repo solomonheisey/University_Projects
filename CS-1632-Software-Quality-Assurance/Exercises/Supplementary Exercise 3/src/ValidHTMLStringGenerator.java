@@ -116,7 +116,7 @@ public class ValidHTMLStringGenerator extends Generator<String> {
 		//Recursive case for <b></b>
 		for(int i = 0; i < larger.length(); i++)
 			if(larger.startsWith(("<b></b>"), i) && !found) {
-				i += 7;
+				i += 6;
 				found = true;
 			} else
 				shorter += larger.charAt(i);
@@ -128,7 +128,7 @@ public class ValidHTMLStringGenerator extends Generator<String> {
 		for(int i = 0; i < shorter.length(); i++) {
 			if (shorter.startsWith(("<i></i>"), i) && !found) {
 				found = true;
-				i += 7;
+				i += 6;
 			} else
 				shorter2 += shorter.charAt(i);
 		}

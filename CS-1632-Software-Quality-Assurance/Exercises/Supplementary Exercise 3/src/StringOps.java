@@ -39,7 +39,6 @@ public class StringOps {
 	 * @return Whether s is in valid HTML format (with matching <b> and <i> tags)
 	 */
 	public static boolean isValidHTML(String s) {
-		// TODO: Fix bug!
 		Stack<String> stack = new Stack<String>();
 		for (int i = 0; i < s.length(); i++) {
 			if (s.startsWith("<b>", i) || s.startsWith("<i>", i)) {
