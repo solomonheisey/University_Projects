@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,8 +102,33 @@ public class ValidHTMLStringGenerator extends Generator<String> {
 	 */
 	@Override
 	public List<String> doShrink(SourceOfRandomness random, String larger) {
-		// TODO: Fill in looking at the Javadoc comments above and ABCStringGenerator
-		return Collections.emptyList();
-		
+
+		//Base case
+		//Cant be another matching pair in String, return empty list
+		if(larger.length() == 0)
+			return Collections.emptyList();
+
+		List<String> list = new ArrayList<>();
+		String shorter = "";
+		String shorter2 = "";
+
+		//Recursive case for <b></b>
+		for(int i = 0; i < larger.length(); i++)
+			if(larger.startsWith(("<b></b>"), i))
+				i += 7;
+			else
+				shorter += larger.charAt(i);
+
+		list.add(shorter);
+
+		//Recursive case for <i></i>
+		for(int i = 0; i < shorter.length(); i++)
+			if(shorter.startsWith(("<i></i>"), i))
+				i += 7;
+			else
+				shorter2 += shorter.charAt(i);
+
+		list.add(shorter2);
+		return list;
 	}
 }
