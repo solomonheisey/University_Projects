@@ -33,9 +33,33 @@ public class GameOfLifePinningTest {
 	 */
 
 	/* TODO: Declare all variables required for the test fixture. */
+	MainFrame mf;
+	MainPanel mp;
+	Cell[][] _cell;
+	Cell cell;
 
 	@Before
 	public void setUp() {
+		cell = mock(Cell.class);
+
+		_cell = new Cell[5][5];
+		mf = new MainFrame(5);
+		mp = new MainPanel(5);
+
+		when(_cell[2][1].getAlive()).thenReturn(false);
+		when(_cell[2][2].getAlive()).thenReturn(false);
+		when(_cell[2][3].getAlive()).thenReturn(false);
+
+
+		mp.setCells(_cells);
+
+
+
+
+
+
+
+
 		/*
 		 * TODO: initialize the text fixture. For the initial pattern, use the "blinker"
 		 * pattern shown in:
@@ -45,6 +69,12 @@ public class GameOfLifePinningTest {
 		 * Start from the vertical bar on a 5X5 matrix as shown in the GIF.
 		 */
 	}
+
+	@Test
+	public void testIterateCell() {
+
+	}
+
 
 	/* TODO: Write the three pinning unit tests for the three optimized methods */
 

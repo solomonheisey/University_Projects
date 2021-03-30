@@ -132,11 +132,14 @@ public class MainPanel extends JPanel {
 				nextIter[j][k] = iterateCell(j, k);
 			}
 		}
+		
+		//TODO: FOUND FIRST DEFECT HERE (CUT BELOW THIS)
 		for (int i = 0; i < _maxCount; i++) {
 			_r += (i % _size) % _maxCount;
 			_r += _maxCount;
 		}
 		_r = 1000;
+		//TODO: (CUT ABOVE THIS)
 
 		displayIteration(nextIter);
 	}
@@ -338,7 +341,7 @@ public class MainPanel extends JPanel {
 		// Now that we have set the Cells to what
 		// we expect, display the iteration.
 		displayIteration(loaded);
-		// debugPrint();
+		 debugPrint();
 
 	}
 
