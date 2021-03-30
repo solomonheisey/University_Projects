@@ -1,20 +1,14 @@
-/**
- * Code by @author Wonsun Ahn
- * 
- * DrunkCarnivalShooter: A carnival shooter with four targets, but while drunk!
- */
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
-	private static Random rand;
+	private Random rand;
 
-	private static ArrayList<Boolean> targets;
-	private static int remainingTargetNum;
+	private ArrayList<Boolean> targets;
+	private int remainingTargetNum;
 
-	private static int roundNum;
+	private int roundNum;
 
 	/**
 	 * Constructor. Creates 4 targets for the player to shoot. Not a particularly
@@ -25,7 +19,6 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	DrunkCarnivalShooterImpl() {
 		rand = new Random();
 		targets = new ArrayList<Boolean>();
-		targets = null;
 		remainingTargetNum = 4;
 		for (int i = 0; i < remainingTargetNum; i++) {
 			targets.add(true);
@@ -41,11 +34,13 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	 * 
 	 * @return the "fuzzed" target number
 	 */
-	private int ShootFuzz(int t, StringBuilder builder) {
-		int offsetNum = rand.nextInt(3) - 1;
+	private int shootFuzz(int t, StringBuilder builder) {
+		int offsetNum = rand.nextInt(3) + 1;
 		int fuzzedT = t + offsetNum;
 		if (offsetNum > 0) {
-			builder.append("You aimed at target #" + t + " but the Force pulls your bullet to the right.\n");
+			builder.append("You aimed at target #");
+			builder.append(t);
+			builder.append(" but the Force pulls your bullet to the right.\n");
 		} else if (offsetNum < 0) {
 			builder.append("You aimed at target #" + t + " but the Force pulls your bullet to the left.\n");
 		}
@@ -55,21 +50,24 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	/**
 	 * Returns a string representing the status of the targets in the current round.
 	 * Targets that are still standing are represented by the string " || ".
-	 * 
-	 * @param t the original target number (stale comment that needs removal)
+	 *
 	 * 
 	 * @return the round string
 	 */
 	public String getRoundString() {
-		String ret = "Round #" + roundNum + ":";
+		StringBuilder ret = new StringBuilder();
+		ret.append("Round #");
+		ret.append(roundNum);
+		ret.append(":");
+
 		for (boolean standing : targets) {
-		if (standing) {
-			ret += "  ||  ";
-		} else {
-			ret += "      ";
+			if (standing) {
+				ret.append("  ||  ");
+			} else {
+				ret.append("      ");
+			}
 		}
-		}
-		return ret;
+		return ret.toString();
 	}
 
 	/**
@@ -85,9 +83,11 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 		// Increment round sequence number
 		roundNum++;
 		// Shoot at aimed target
-		int newT = ShootFuzz(t, builder);
+		int newT = shootFuzz(t, builder);
 		if (takeDownTarget(newT)) {
-			builder.append("You hit target #" + newT + "! \"The Force is strong with this one.\", Darth opines.\n");
+			builder.append("You hit target #");
+			builder.append(newT);
+			builder.append("! \"The Force is strong with this one.\", Darth opines.\n");
 			remainingTargetNum--;
 			return true;
 		} else {
@@ -116,9 +116,10 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	/**
 	 * Returns whether a target is still standing.
 	 * 
-	 * @return true if the target is standing, false otherwise
-	 * 
 	 * @param t the target number
+	 *
+	 * @return true if the target is standing, false otherwise
+	 *
 	 */
 	public boolean isTargetStanding(int t) {
 		return targets.get(t);
@@ -130,7 +131,6 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	 * @return the number of remaining targets
 	 */
 	public int getRemainingTargetNum() {
-		int remaining = remainingTargetNum;
 		return remainingTargetNum;
 	}
 
@@ -143,8 +143,7 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	 * 
 	 * @param args Optional command line arguments. Set arg[0] to "test" to verify
 	 *             game with JPF.
-	 *             
-	 * @return the main method does not return anything (stale comment that needs removal)
+	 *
 	 */
 	public static void main(String[] args) {
 		DrunkCarnivalShooterImpl shooter = new DrunkCarnivalShooterImpl();
