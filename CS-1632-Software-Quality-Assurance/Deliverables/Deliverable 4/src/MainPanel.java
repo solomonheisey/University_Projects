@@ -18,6 +18,10 @@ public class MainPanel extends JPanel {
 
 	private boolean _running = false;
 
+	public MainPanel() {
+
+	}
+
 	public int getCellsSize() {
 		return _size;
 	}

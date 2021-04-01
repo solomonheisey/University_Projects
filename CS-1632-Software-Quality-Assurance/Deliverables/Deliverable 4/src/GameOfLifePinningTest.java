@@ -5,6 +5,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GameOfLifePinningTest {
 	/*
 	 * READ ME: You may need to write pinning tests for methods from multiple
@@ -33,31 +34,30 @@ public class GameOfLifePinningTest {
 	 */
 
 	/* TODO: Declare all variables required for the test fixture. */
-	MainFrame mf;
-	MainPanel mp;
-	Cell[][] _cell;
-	Cell cell;
-
+	MainPanel testMP;
+	Cell[][] testCells;
+	GameOfLife gol;
 	@Before
 	public void setUp() {
-		cell = mock(Cell.class);
 
-		_cell = new Cell[5][5];
-		mf = new MainFrame(5);
-		mp = new MainPanel(5);
-
-		when(_cell[2][1].getAlive()).thenReturn(false);
-		when(_cell[2][2].getAlive()).thenReturn(false);
-		when(_cell[2][3].getAlive()).thenReturn(false);
+		//Initialize the class we're testing
+		testMP = new MainPanel();
 
 
-		mp.setCells(_cells);
+		testCells = getMocks(Cell.class, 5);
 
+		//Fill array with mocked Cells
+		for( int i = 0; i < 5; i++)
+			for( int j = 0; j < 5; j++) {
+				testCells[j][i] = mock(Cell.class);
+			}
 
+		//Set initial pattern
+		when(testCells[1][2].getAlive()).thenReturn(false);
+		when(testCells[2][2].getAlive()).thenReturn(false);
+		when(testCells[3][2].getAlive()).thenReturn(false);
 
-
-
-
+		testMP.setCells(testCells);
 
 
 		/*
@@ -69,6 +69,20 @@ public class GameOfLifePinningTest {
 		 * Start from the vertical bar on a 5X5 matrix as shown in the GIF.
 		 */
 	}
+
+
+	private Cell[][] getMocks(Class<? extends Cell> cellClass, int amount){
+		Cell[][] resultArray = new Cell[amount][amount];
+
+		for(int i = 0; i < amount; i++)
+			for(int j = 0; j < amount; j++){
+				Cell newCell = mock(cellClass);
+				resultArray[i][j] = newCell;
+			}
+		return resultArray;
+	}
+
+
 
 	@Test
 	public void testIterateCell() {
