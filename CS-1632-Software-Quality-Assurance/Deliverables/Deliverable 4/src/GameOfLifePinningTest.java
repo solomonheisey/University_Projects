@@ -40,22 +40,6 @@ public class GameOfLifePinningTest {
 	@Before
 	public void setUp() {
 
-		//Initialize the class we're testing
-		testMP = new MainPanel();
-
-		//Fill array with mocked Cells
-		for( int i = 0; i < 5; i++)
-			for( int j = 0; j < 5; j++) {
-				testCells[i][j] = mock(Cell.class);
-			}
-
-		//Set initial pattern
-		when(testCells[2][1].getAlive()).thenReturn(false);
-		when(testCells[2][2].getAlive()).thenReturn(false);
-		when(testCells[2][3].getAlive()).thenReturn(false);
-
-		testMP.setCells(testCells);
-
 		/*
 		 * TODO: initialize the text fixture. For the initial pattern, use the "blinker"
 		 * pattern shown in:
@@ -64,32 +48,40 @@ public class GameOfLifePinningTest {
 		 * https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#/media/File:Game_of_life_blinker.gif
 		 * Start from the vertical bar on a 5X5 matrix as shown in the GIF.
 		 */
+
+		//Initialize the class we're testing
+		testMP = new MainPanel(5);
+
+		//Initialize the array
+		testCells = new Cell[5][5];
+
+		//Fill array with mocked Cells
+		for( int i = 0; i < 5; i++)
+			for( int j = 0; j < 5; j++) {
+				testCells[i][j] = mock(Cell.class);
+			}
+
+		//Set initial pattern
+		when(testCells[2][1].getAlive()).thenReturn(true);
+		when(testCells[2][2].getAlive()).thenReturn(true);
+		when(testCells[2][3].getAlive()).thenReturn(true);
+
+		//Set the Main Panel's Cells as the mocked Cells above
+		testMP.setCells(testCells);
 	}
-
-
-//	I don't think we need this, as we're only setting doing this once
-//	private Cell[][] getMocks(Class<? extends Cell> cellClass, int amount){
-//		Cell[][] resultArray = new Cell[amount][amount];
-//
-//		for(int i = 0; i < amount; i++)
-//			for(int j = 0; j < amount; j++){
-//				Cell newCell = mock(cellClass);
-//				resultArray[i][j] = newCell;
-//			}
-//		return resultArray;
-//	}
-
-	/* TODO: Write the three pinning unit tests for the three optimized methods */
 
 	@After
 	public void tearDown(){
 
 	}
 
+	/* TODO: Write the three pinning unit tests for the three optimized methods */
+
 	/**
 	 * Test case for boolean iterateCell(int x, int y).
-	 * Preconditions: Following Cells are dead: testCells[2][1], testCells[2][2], testCells[2][3]
-	 * Execution Steps: 
+	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
+	 * Execution Steps: Call iterateCell(2, 1)
+	 * Post Conditions: iterateCell() returns false
 	 */
 
 	@Test
@@ -97,18 +89,73 @@ public class GameOfLifePinningTest {
 		//Preconditions
 
 		//Execution Steps
+		boolean isAlive = testMP.iterateCell(2,1);
+
 
 		//Post Conditions
+		assertFalse("Cell located at testCells[2][1] should be dead because it only has one neighbor", isAlive);
 	}
 
+	/**
+	 * Test case for boolean iterateCell(int x, int y).
+	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
+	 * Execution Steps: Call iterateCell(1, 2)
+	 * Post Conditions: iterateCell() returns true
+	 */
 	@Test
 	public void testIterateCellDeadThenAlive() {
 		//Preconditions
 
 		//Execution Steps
+		boolean isAlive = testMP.iterateCell(1,2);
 
 		//Post Conditions
+		assertTrue("Cell located at testCells[1][2] should be alive because it has three neighbors", isAlive);
 	}
 
+	/**
+	 * Test case for calculateNextIteration().
+	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
+	 * Execution Steps: Call calculateNextIteration()
+	 * Post Conditions: Verify that setAlive(boolean bool) attempts to set the follow:
+	 * 		_cells[1][2] = true (alive)
+	 * 		_cells[3][2] = true (alive)
+	 * 		_cells[2][1] = false (dead)
+	 * 		_cells[2][3] = false (dead)
+	 */
+	@Test
+	public void testCalculateNextIteration() {
+		//Preconditions
+		testCells = testMP.getCells();
 
+		//Execution Steps
+		testMP.calculateNextIteration();
+
+		//Post Conditions
+		Mockito.verify(testCells[1][2], times(1)).setAlive(true);
+		Mockito.verify(testCells[3][2], times(1)).setAlive(true);
+		Mockito.verify(testCells[2][1], times(1)).setAlive(false);
+		Mockito.verify(testCells[2][3], times(1)).setAlive(false);
+	}
+
+	/**
+	 * Test case for backup().
+	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
+	 * Execution Steps: Call backup()
+	 * Post Conditions: Verify that setAlive(boolean bool) attempts to set the follow:
+	 * 		_cells[1][2] = true (alive)
+	 * 		_cells[3][2] = true (alive)
+	 * 		_cells[2][1] = false (dead)
+	 * 		_cells[2][3] = false (dead)
+	 */
+	@Test
+	public void testBackup() {
+		//Preconditions
+
+		//Execution Steps
+		testMP.backup();
+
+		//Post Conditions
+
+	}
 }

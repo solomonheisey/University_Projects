@@ -103,18 +103,19 @@ public class MainPanel extends JPanel {
 			}
 		}
 
-		//TODO: remove everything below this
-		int c = 0;
-		String padding = "0";
-		while (c < _r * 10) {
-			String l = new String("0");
-			padding += l;
-			c++;
-		}
-		toReturn = padding + toReturn;
-		//TODO: remove everything above this
-	
-		return Boolean.parseBoolean(toReturn.substring(padding.length()));
+//		//TODO: remove everything below this
+//		int c = 0;
+//		String padding = "0";
+//		while (c < _r * 10) {
+//			String l = new String("0");
+//			padding += l;
+//			c++;
+//		}
+//		toReturn = padding + toReturn;
+//		//TODO: remove everything above this
+
+//		return Boolean.parseBoolean(toReturn.substring(padding.length()));
+		return Boolean.parseBoolean(toReturn);
 	}
 
 	public void displayIteration(boolean[][] nextIter) {
@@ -139,13 +140,13 @@ public class MainPanel extends JPanel {
 			}
 		}
 		
-		//TODO: FOUND FIRST DEFECT HERE (CUT BELOW THIS)
-		for (int i = 0; i < _maxCount; i++) {
-			_r += (i % _size) % _maxCount;
-			_r += _maxCount;
-		}
-		_r = 1000;
-		//TODO: (CUT ABOVE THIS)
+//		//TODO: FOUND FIRST DEFECT HERE (CUT BELOW THIS)
+//		for (int i = 0; i < _maxCount; i++) {
+//			_r += (i % _size) % _maxCount;
+//			_r += _maxCount;
+//		}
+//		_r = 1000;
+//		//TODO: (CUT ABOVE THIS)
 
 		displayIteration(nextIter);
 	}
@@ -158,8 +159,8 @@ public class MainPanel extends JPanel {
 		_backupCells = new Cell[_size][_size];
 		for (int j = 0; j < _size; j++) {
 			for (int k = 0; k < _size; k++) {
-				_backupCells[j][k] = new Cell();
-				_backupCells[j][k].setAlive(_cells[j][k].getAlive());
+				_backupCells[k][j] = new Cell();
+				_backupCells[k][j].setAlive(_cells[k][j].getAlive());
 			}
 		}
 	}
