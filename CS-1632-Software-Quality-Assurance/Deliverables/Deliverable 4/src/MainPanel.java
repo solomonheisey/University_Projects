@@ -34,6 +34,8 @@ public class MainPanel extends JPanel {
 		return _cells;
 	}
 
+	public Cell[][] getBackupCells() {return _backupCells;}
+
 	public int getNumNeighbors(int x, int y) {
 		int size = _size;
 		int leftX = (x - 1) % size;

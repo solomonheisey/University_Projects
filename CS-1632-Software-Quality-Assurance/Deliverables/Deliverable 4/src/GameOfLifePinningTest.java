@@ -35,7 +35,7 @@ public class GameOfLifePinningTest {
 
 	/* TODO: Declare all variables required for the test fixture. */
 	MainPanel testMP;
-	Cell[][] testCells;
+	Cell[][] testCells, testBackupCells;
 
 	@Before
 	public void setUp() {
@@ -142,20 +142,18 @@ public class GameOfLifePinningTest {
 	 * Test case for backup().
 	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
 	 * Execution Steps: Call backup()
-	 * Post Conditions: Verify that setAlive(boolean bool) attempts to set the follow:
-	 * 		_cells[1][2] = true (alive)
-	 * 		_cells[3][2] = true (alive)
-	 * 		_cells[2][1] = false (dead)
-	 * 		_cells[2][3] = false (dead)
+	 * Post Conditions: Assert that _backupCells[4][1] and _cells[4][1] are not equal (different memory locations)
 	 */
 	@Test
 	public void testBackup() {
 		//Preconditions
+		testCells = testMP.getCells();
 
 		//Execution Steps
 		testMP.backup();
+		testBackupCells = testMP.getBackupCells();
 
 		//Post Conditions
-
+		assertNotEquals(testBackupCells[4][1], testCells[4][1]);
 	}
 }
