@@ -140,9 +140,9 @@ public class GameOfLifePinningTest {
 
 	/**
 	 * Test case for backup().
-	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
+	 * Preconditions: Following Cells are alive: testCells[1][2], testCells[2][2], testCells[3][2]
 	 * Execution Steps: Call backup()
-	 * Post Conditions: Assert that _backupCells[4][1] and _cells[4][1] are not equal (different memory locations)
+	 * Post Conditions: Assert that _backupCells[2][2] and _cells[2][2] are not equal (different memory locations)
 	 */
 	@Test
 	public void testBackup() {
@@ -154,6 +154,9 @@ public class GameOfLifePinningTest {
 		testBackupCells = testMP.getBackupCells();
 
 		//Post Conditions
-		assertNotEquals(testBackupCells[4][1], testCells[4][1]);
+		assertNotEquals(testBackupCells[2][2], testCells[2][2]);
+		assertTrue(testBackupCells[1][2].getAlive());
+		assertTrue(testBackupCells[2][2].getAlive());
+		assertTrue(testBackupCells[3][2].getAlive());
 	}
 }

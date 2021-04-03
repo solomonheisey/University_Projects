@@ -159,6 +159,8 @@ public class MainPanel extends JPanel {
 
 	public void backup() {
 		_backupCells = new Cell[_size][_size];
+
+
 		for (int j = 0; j < _size; j++) {
 			for (int k = 0; k < _size; k++) {
 				_backupCells[k][j] = new Cell();
