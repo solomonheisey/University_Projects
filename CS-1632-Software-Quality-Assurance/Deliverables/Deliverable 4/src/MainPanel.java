@@ -102,7 +102,8 @@ public class MainPanel extends JPanel {
 				toReturn = "false";
 			}
 		}
-		
+
+		//TODO: remove everything below this
 		int c = 0;
 		String padding = "0";
 		while (c < _r * 10) {
@@ -111,6 +112,7 @@ public class MainPanel extends JPanel {
 			c++;
 		}
 		toReturn = padding + toReturn;
+		//TODO: remove everything above this
 	
 		return Boolean.parseBoolean(toReturn.substring(padding.length()));
 	}

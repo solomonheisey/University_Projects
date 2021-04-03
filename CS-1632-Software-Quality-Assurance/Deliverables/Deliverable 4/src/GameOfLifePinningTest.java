@@ -36,29 +36,25 @@ public class GameOfLifePinningTest {
 	/* TODO: Declare all variables required for the test fixture. */
 	MainPanel testMP;
 	Cell[][] testCells;
-	GameOfLife gol;
+
 	@Before
 	public void setUp() {
 
 		//Initialize the class we're testing
 		testMP = new MainPanel();
 
-
-		testCells = getMocks(Cell.class, 5);
-
 		//Fill array with mocked Cells
 		for( int i = 0; i < 5; i++)
 			for( int j = 0; j < 5; j++) {
-				testCells[j][i] = mock(Cell.class);
+				testCells[i][j] = mock(Cell.class);
 			}
 
 		//Set initial pattern
-		when(testCells[1][2].getAlive()).thenReturn(false);
+		when(testCells[2][1].getAlive()).thenReturn(false);
 		when(testCells[2][2].getAlive()).thenReturn(false);
-		when(testCells[3][2].getAlive()).thenReturn(false);
+		when(testCells[2][3].getAlive()).thenReturn(false);
 
 		testMP.setCells(testCells);
-
 
 		/*
 		 * TODO: initialize the text fixture. For the initial pattern, use the "blinker"
@@ -71,25 +67,48 @@ public class GameOfLifePinningTest {
 	}
 
 
-	private Cell[][] getMocks(Class<? extends Cell> cellClass, int amount){
-		Cell[][] resultArray = new Cell[amount][amount];
-
-		for(int i = 0; i < amount; i++)
-			for(int j = 0; j < amount; j++){
-				Cell newCell = mock(cellClass);
-				resultArray[i][j] = newCell;
-			}
-		return resultArray;
-	}
-
-
-
-	@Test
-	public void testIterateCell() {
-
-	}
-
+//	I don't think we need this, as we're only setting doing this once
+//	private Cell[][] getMocks(Class<? extends Cell> cellClass, int amount){
+//		Cell[][] resultArray = new Cell[amount][amount];
+//
+//		for(int i = 0; i < amount; i++)
+//			for(int j = 0; j < amount; j++){
+//				Cell newCell = mock(cellClass);
+//				resultArray[i][j] = newCell;
+//			}
+//		return resultArray;
+//	}
 
 	/* TODO: Write the three pinning unit tests for the three optimized methods */
+
+	@After
+	public void tearDown(){
+
+	}
+
+	/**
+	 * Test case for boolean iterateCell(int x, int y).
+	 * Preconditions: Following Cells are dead: testCells[2][1], testCells[2][2], testCells[2][3]
+	 * Execution Steps: 
+	 */
+
+	@Test
+	public void testIterateCellAliveThenDead() {
+		//Preconditions
+
+		//Execution Steps
+
+		//Post Conditions
+	}
+
+	@Test
+	public void testIterateCellDeadThenAlive() {
+		//Preconditions
+
+		//Execution Steps
+
+		//Post Conditions
+	}
+
 
 }
