@@ -62,9 +62,9 @@ public class GameOfLifePinningTest {
 			}
 
 		//Set initial pattern
-		when(testCells[2][1].getAlive()).thenReturn(true);
+		when(testCells[1][2].getAlive()).thenReturn(true);
 		when(testCells[2][2].getAlive()).thenReturn(true);
-		when(testCells[2][3].getAlive()).thenReturn(true);
+		when(testCells[3][2].getAlive()).thenReturn(true);
 
 		//Set the Main Panel's Cells as the mocked Cells above
 		testMP.setCells(testCells);
@@ -80,7 +80,7 @@ public class GameOfLifePinningTest {
 	/**
 	 * Test case for boolean iterateCell(int x, int y).
 	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
-	 * Execution Steps: Call iterateCell(2, 1)
+	 * Execution Steps: Call iterateCell(1, 2)
 	 * Post Conditions: iterateCell() returns false
 	 */
 
@@ -89,7 +89,7 @@ public class GameOfLifePinningTest {
 		//Preconditions
 
 		//Execution Steps
-		boolean isAlive = testMP.iterateCell(2,1);
+		boolean isAlive = testMP.iterateCell(1,2);
 
 
 		//Post Conditions
@@ -99,7 +99,7 @@ public class GameOfLifePinningTest {
 	/**
 	 * Test case for boolean iterateCell(int x, int y).
 	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
-	 * Execution Steps: Call iterateCell(1, 2)
+	 * Execution Steps: Call iterateCell(2, 1)
 	 * Post Conditions: iterateCell() returns true
 	 */
 	@Test
@@ -107,7 +107,7 @@ public class GameOfLifePinningTest {
 		//Preconditions
 
 		//Execution Steps
-		boolean isAlive = testMP.iterateCell(1,2);
+		boolean isAlive = testMP.iterateCell(2,1);
 
 		//Post Conditions
 		assertTrue("Cell located at testCells[1][2] should be alive because it has three neighbors", isAlive);
@@ -118,10 +118,10 @@ public class GameOfLifePinningTest {
 	 * Preconditions: Following Cells are alive: testCells[2][1], testCells[2][2], testCells[2][3]
 	 * Execution Steps: Call calculateNextIteration()
 	 * Post Conditions: Verify that setAlive(boolean bool) attempts to set the follow:
-	 * 		_cells[1][2] = true (alive)
-	 * 		_cells[3][2] = true (alive)
-	 * 		_cells[2][1] = false (dead)
-	 * 		_cells[2][3] = false (dead)
+	 * 		_cells[2][1] = true (alive)
+	 * 		_cells[2][3] = true (alive)
+	 * 		_cells[1][2] = false (dead)
+	 * 		_cells[3][2] = false (dead)
 	 */
 	@Test
 	public void testCalculateNextIteration() {
@@ -132,10 +132,10 @@ public class GameOfLifePinningTest {
 		testMP.calculateNextIteration();
 
 		//Post Conditions
-		Mockito.verify(testCells[1][2], times(1)).setAlive(true);
-		Mockito.verify(testCells[3][2], times(1)).setAlive(true);
-		Mockito.verify(testCells[2][1], times(1)).setAlive(false);
-		Mockito.verify(testCells[2][3], times(1)).setAlive(false);
+		Mockito.verify(testCells[1][2], times(1)).setAlive(false);
+		Mockito.verify(testCells[3][2], times(1)).setAlive(false);
+		Mockito.verify(testCells[2][1], times(1)).setAlive(true);
+		Mockito.verify(testCells[2][3], times(1)).setAlive(true);
 	}
 
 	/**
