@@ -3,6 +3,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Code by @author Wonsun Ahn
  * 
@@ -42,7 +44,7 @@ public class DrunkCarnivalShooterTest {
 		shooter = DrunkCarnivalShooter.createInstance();
 		// Set up the targets in the game to reflect the targets array
 		for (int i = 0; i < 4; i++) {
-			if (targets[i] == false) {
+			if (!targets[i]) {
 				shooter.takeDownTarget(i);
 			}
 		}
@@ -71,6 +73,23 @@ public class DrunkCarnivalShooterTest {
 	 */
 	@Test
 	public void testShoot() {
+
+		//Preconditions
+		StringBuilder builder = new StringBuilder();
+
+		//Execution steps
+		shooter.shoot(targetChoice, builder);
+
+		//Invariant
+		int count = 0;
+		for(int i = 0; i < targets.length; i++){
+			 if(shooter.isTargetStanding(i))
+			 	count++;
+		}
+
+		assertEquals(failString, shooter.getRemainingTargetNum(), count);
+
+
 		// TODO: Implement
 
 		/*
@@ -94,6 +113,6 @@ public class DrunkCarnivalShooterTest {
 		 * 
 		 * PLEASE COMMENT OUT when you are done implementing.
 		 */
-		System.out.println(failString);
+//		System.out.println(failString);
 	}
 }
