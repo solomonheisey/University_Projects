@@ -1,3 +1,4 @@
+import gov.nasa.jpf.vm.Verify;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,11 @@ public class DrunkCarnivalShooterTest {
 		 * Verify API, look at:
 		 * https://github.com/javapathfinder/jpf-core/wiki/Verify-API-of-JPF
 		 */
+
+		targetChoice = Verify.getInt(0, 3);
+
+		for(int i = 0; i < targets.length; i++)
+			targets[i] = Verify.getBoolean();
 
 		// Create the game
 		shooter = DrunkCarnivalShooter.createInstance();

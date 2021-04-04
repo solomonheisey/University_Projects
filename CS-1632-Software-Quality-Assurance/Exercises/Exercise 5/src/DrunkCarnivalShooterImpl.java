@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+
+import gov.nasa.jpf.annotation.FilterField;
 import gov.nasa.jpf.vm.Verify;
 
 public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
@@ -9,7 +11,7 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	private ArrayList<Boolean> targets;
 	private int remainingTargetNum;
 
-	private int roundNum;
+	@FilterField private int roundNum;
 
 	/**
 	 * Constructor. Creates 4 targets for the player to shoot. Not a particularly
@@ -36,8 +38,14 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	 * @return the "fuzzed" target number
 	 */
 	private int shootFuzz(int t, StringBuilder builder) {
-		int offsetNum = rand.nextInt(3) + 1;
-		int fuzzedT = t + offsetNum;
+		int offsetNum = rand.nextInt(3) - 1;
+
+		int fuzzedT;
+		if(t == 3 && offsetNum == 1 || t == 0 && offsetNum == -1)
+			fuzzedT = t;
+		else
+			fuzzedT = t + offsetNum;
+
 		if (offsetNum > 0) {
 			builder.append("You aimed at target #");
 			builder.append(t);
