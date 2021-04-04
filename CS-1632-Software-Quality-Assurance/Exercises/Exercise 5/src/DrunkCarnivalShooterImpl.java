@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import gov.nasa.jpf.vm.Verify;
 
 public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	private Random rand;
@@ -147,11 +148,11 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	 */
 	public static void main(String[] args) {
 		DrunkCarnivalShooterImpl shooter = new DrunkCarnivalShooterImpl();
-		Scanner scanner = new Scanner(System.in);
+//		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println(shooter.getRoundString());
 			System.out.println("Choose your target (0-3): ");
-			int t = scanner.nextInt();
+			int t = Verify.getInt(0,3);
 
 			// Shoot the target
 			StringBuilder builder = new StringBuilder();
@@ -166,6 +167,6 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 				break;
 			}
 		}
-		scanner.close();
+//		scanner.close();
 	}
 }
