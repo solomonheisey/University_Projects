@@ -35,7 +35,8 @@ public class GameOfLifePinningTest {
 
 	/* TODO: Declare all variables required for the test fixture. */
 	MainPanel testMP;
-	Cell[][] testCells, testBackupCells;
+	Cell testCell;
+	Cell[][] testCells;
 
 	@Before
 	public void setUp() {
@@ -139,24 +140,40 @@ public class GameOfLifePinningTest {
 	}
 
 	/**
-	 * Test case for backup().
-	 * Preconditions: Following Cells are alive: testCells[1][2], testCells[2][2], testCells[3][2]
-	 * Execution Steps: Call backup()
-	 * Post Conditions: Assert that _backupCells[2][2] and _cells[2][2] are not equal (different memory locations)
+	 * Test case for the Cell Class's toString().
+	 * Preconditions: Initialize a new Cell that's alive
+	 * Execution Steps: Call testCell.toString()
+	 * Post Conditions: Assert that testCell.toString returned "X".
 	 */
 	@Test
-	public void testBackup() {
+	public void testCellToStringAlive() {
 		//Preconditions
-		testCells = testMP.getCells();
+		testCell = new Cell(true);
 
 		//Execution Steps
-		testMP.backup();
-		testBackupCells = testMP.getBackupCells();
+		String expectedResult = "X";
+		String actualResult = testCell.toString();
 
 		//Post Conditions
-		assertNotEquals(testBackupCells[2][2], testCells[2][2]);
-		assertTrue(testBackupCells[1][2].getAlive());
-		assertTrue(testBackupCells[2][2].getAlive());
-		assertTrue(testBackupCells[3][2].getAlive());
+		assertEquals(expectedResult, actualResult);
+	}
+
+	/**
+	 * Test case for the Cell Class's toString().
+	 * Preconditions: Initialize a new Cell that's dead
+	 * Execution Steps: Call testCell.toString()
+	 * Post Conditions: Assert that testCell.toString returned ".".
+	 */
+	@Test
+	public void testCellToStringDead() {
+		//Preconditions
+		testCell = new Cell(false);
+
+		//Execution Steps
+		String expectedResult = ".";
+		String actualResult = testCell.toString();
+
+		//Post Conditions
+		assertEquals(expectedResult, actualResult);
 	}
 }
