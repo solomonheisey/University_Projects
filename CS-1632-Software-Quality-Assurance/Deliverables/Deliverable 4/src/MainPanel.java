@@ -161,8 +161,8 @@ public class MainPanel extends JPanel {
 
 		for (int j = 0; j < _size; j++) {
 			for (int k = 0; k < _size; k++) {
-				_backupCells[k][j] = new Cell();
-				_backupCells[k][j].setAlive(_cells[k][j].getAlive());
+				_backupCells[j][k] = new Cell();
+				_backupCells[j][k].setAlive(_cells[j][k].getAlive());
 			}
 		}
 	}
@@ -222,12 +222,7 @@ public class MainPanel extends JPanel {
 
 		for (int j = 0; j < _size; j++) {
 			for (int k = 0; k < _size; k++) {
-				if (_cells[j][k].getAlive()) {
-					toWrite += _cells[j][k].toString();
-				} else {
-					toWrite += _cells[j][k].toString();
-				}
-
+				toWrite += _cells[j][k].toString();
 			}
 			toWrite += "\n";
 		}

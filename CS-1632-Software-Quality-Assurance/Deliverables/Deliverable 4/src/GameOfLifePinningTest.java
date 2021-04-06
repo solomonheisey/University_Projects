@@ -148,14 +148,12 @@ public class GameOfLifePinningTest {
 	@Test
 	public void testCellToStringAlive() {
 		//Preconditions
-		testCell = new Cell(true);
 
 		//Execution Steps
-		String expectedResult = "X";
-		String actualResult = testCell.toString();
+		testMP.toString();
 
 		//Post Conditions
-		assertEquals(expectedResult, actualResult);
+		Mockito.verify(testCells[1][2], times(1)).;
 	}
 
 	/**
