@@ -1,6 +1,9 @@
+import gov.nasa.jpf.vm.Verify;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Code by @author Wonsun Ahn
@@ -23,20 +26,17 @@ public class DrunkCarnivalShooterTest {
 	@Before
 	public void setUp() {
 		targets = new boolean[4];
-		/*
-		 * TODO: Use the Java Path Finder Verify.getInt(int min, int max) API to
-		 * generate choices for targetChoice. It should take values 0-3. Also, generate
-		 * choices for targets such that each of the four elements are enumerated with a
-		 * true or false value using the Verify.getBoolean() API. To see how to use the
-		 * Verify API, look at:
-		 * https://github.com/javapathfinder/jpf-core/wiki/Verify-API-of-JPF
-		 */
+
+		targetChoice = Verify.getInt(0, 3);
+
+		for(int i = 0; i < targets.length; i++)
+			targets[i] = Verify.getBoolean();
 
 		// Create the game
 		shooter = DrunkCarnivalShooter.createInstance();
 		// Set up the targets in the game to reflect the targets array
 		for (int i = 0; i < 4; i++) {
-			if (targets[i] == false) {
+			if (!targets[i]) {
 				shooter.takeDownTarget(i);
 			}
 		}
@@ -65,29 +65,20 @@ public class DrunkCarnivalShooterTest {
 	 */
 	@Test
 	public void testShoot() {
-		// TODO: Implement
 
-		/*
-		 * Currently, it just prints out the failString to demonstrate to you all the
-		 * cases considered by Java Path Finder. If you called the Verify API correctly
-		 * in setUp(), you should see all combinations of targets and targetChoices:
-		 * 
-		 * Failure in Round #0:                         (targetChoice=0):
-		 * Failure in Round #0:                    ||   (targetChoice=0):
-		 * Failure in Round #0:              ||         (targetChoice=0):
-		 * Failure in Round #0:              ||    ||   (targetChoice=0):
-		 * Failure in Round #0:        ||               (targetChoice=0):
-		 * Failure in Round #0:        ||          ||   (targetChoice=0):
-		 * Failure in Round #0:        ||    ||         (targetChoice=0):
-		 * Failure in Round #0:        ||    ||    ||   (targetChoice=0):
-		 * Failure in Round #0:  ||                     (targetChoice=0):
-		 * ...
-		 * Failure in Round #0:  ||    ||          ||   (targetChoice=3):
-		 * Failure in Round #0:  ||    ||    ||         (targetChoice=3):
-		 * Failure in Round #0:  ||    ||    ||    ||   (targetChoice=3):
-		 * 
-		 * PLEASE COMMENT OUT when you are done implementing.
-		 */
-		System.out.println(failString);
+		//Preconditions
+		StringBuilder builder = new StringBuilder();
+
+		//Execution steps
+		shooter.shoot(targetChoice, builder);
+
+		//Invariant
+		int count = 0;
+		for(int i = 0; i < targets.length; i++){
+			 if(shooter.isTargetStanding(i))
+			 	count++;
+		}
+
+		assertEquals(failString, shooter.getRemainingTargetNum(), count);
 	}
 }

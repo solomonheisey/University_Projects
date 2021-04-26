@@ -1,6 +1,7 @@
+import gov.nasa.jpf.annotation.FilterField;
+import gov.nasa.jpf.vm.Verify;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	private Random rand;
@@ -8,7 +9,7 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	private ArrayList<Boolean> targets;
 	private int remainingTargetNum;
 
-	private int roundNum;
+	@FilterField private int roundNum;
 
 	/**
 	 * Constructor. Creates 4 targets for the player to shoot. Not a particularly
@@ -35,8 +36,15 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	 * @return the "fuzzed" target number
 	 */
 	private int shootFuzz(int t, StringBuilder builder) {
-		int offsetNum = rand.nextInt(3) + 1;
-		int fuzzedT = t + offsetNum;
+		int offsetNum = rand.nextInt(3) - 1;
+
+		int fuzzedT;
+		if (t == 3 && offsetNum == 1 || t == 0 && offsetNum == -1) {
+			fuzzedT = t;
+		} else {
+			fuzzedT = t + offsetNum;
+		}
+
 		if (offsetNum > 0) {
 			builder.append("You aimed at target #");
 			builder.append(t);
@@ -88,7 +96,6 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 			builder.append("You hit target #");
 			builder.append(newT);
 			builder.append("! \"The Force is strong with this one.\", Darth opines.\n");
-			remainingTargetNum--;
 			return true;
 		} else {
 			builder.append("You miss! \"Do or do not. There is no try.\", Yoda chides.\n");
@@ -147,11 +154,10 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 	 */
 	public static void main(String[] args) {
 		DrunkCarnivalShooterImpl shooter = new DrunkCarnivalShooterImpl();
-		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println(shooter.getRoundString());
 			System.out.println("Choose your target (0-3): ");
-			int t = scanner.nextInt();
+			int t = Verify.getInt(0, 3);
 
 			// Shoot the target
 			StringBuilder builder = new StringBuilder();
@@ -166,6 +172,5 @@ public class DrunkCarnivalShooterImpl implements DrunkCarnivalShooter {
 				break;
 			}
 		}
-		scanner.close();
 	}
 }
