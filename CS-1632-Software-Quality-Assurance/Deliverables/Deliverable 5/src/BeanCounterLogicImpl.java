@@ -136,7 +136,8 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		remainingBeans = beans.length;
 
 		//Insert first bean
-		this.beans[0].insertBean();
+		this.beans[0].choose();
+		remainingBeans--;
 	}
 
 	/**
