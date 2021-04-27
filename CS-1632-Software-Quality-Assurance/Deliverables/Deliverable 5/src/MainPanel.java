@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 public class MainPanel extends JPanel {
 
-	private BeanCounterLogic logic;	// The core logic of the program
+	private BeanCounterLogic logic;	    // The core logic of the program
 	private Bean[] beans;				// The beans in the machine
 
 	private Point[] beanPositions;		// Current bean positions in physical coordinates

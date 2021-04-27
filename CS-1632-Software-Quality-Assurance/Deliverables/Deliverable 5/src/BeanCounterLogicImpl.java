@@ -1,5 +1,4 @@
-import java.util.Formatter;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Code by @author Wonsun Ahn
@@ -27,7 +26,10 @@ import java.util.Random;
  */
 
 public class BeanCounterLogicImpl implements BeanCounterLogic {
-	// TODO: Add member methods and variables as needed
+	private int slotCount;
+	public BeanImpl[] beans;
+	private ArrayList<Bean>[] beanMachineSlots;
+
 
 	/**
 	 * Constructor - creates the bean counter logic object that implements the core
@@ -36,7 +38,17 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @param slotCount the number of slots in the machine
 	 */
 	BeanCounterLogicImpl(int slotCount) {
-		// TODO: Implement
+		this.slotCount = slotCount;
+		this.beanMachineSlots = new ArrayList[slotCount];
+
+		for(int i = 0; i < beanMachineSlots.length; i++) {
+			this.beanMachineSlots[i] = new ArrayList<>();
+		}
+
+
+
+
+
 	}
 
 	/**
@@ -45,8 +57,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @return number of slots
 	 */
 	public int getSlotCount() {
-		// TODO: Implement
-		return 1;
+		return this.slotCount;
 	}
 	
 	/**
@@ -118,7 +129,13 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @param beans array of beans to add to the machine
 	 */
 	public void reset(Bean[] beans) {
-		// TODO: Implement
+
+		for(int i = 0; i < beanMachineSlots.length; i++) {
+			beanMachineSlots[i] = new ArrayList<>();
+		}
+
+
+
 	}
 
 	/**

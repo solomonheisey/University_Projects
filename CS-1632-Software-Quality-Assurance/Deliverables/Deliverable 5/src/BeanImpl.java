@@ -14,7 +14,7 @@ import java.util.Random;
  * <p>A skill level of 9 means it always makes the "right" choices (pun intended)
  * when the machine is operating in skill mode ("skill" passed on command line).
  * That means the bean will always go right when a peg is encountered, resulting
- * it falling into slot 9. A skill evel of 0 means that the bean will always go
+ * it falling into slot 9. A skill level of 0 means that the bean will always go
  * left, resulting it falling into slot 0. For the in-between skill levels, the
  * bean will first go right then left. For example, for a skill level of 7, the
  * bean will go right 7 times then go left twice.
@@ -27,9 +27,12 @@ import java.util.Random;
  */
 
 public class BeanImpl implements Bean {
-	
-	// TODO: Add more member variables as needed
+
 	private int xpos;
+	private int slotCount;
+	private int skill;
+	private boolean isLuck;
+	private Random rand;
 
 	/**
 	 * Constructor - creates a bean in either luck mode or skill mode.
@@ -39,7 +42,10 @@ public class BeanImpl implements Bean {
 	 * @param rand		the random number generator
 	 */
 	BeanImpl(int slotCount, boolean isLuck, Random rand) {
-		// TODO: Implement
+		this.slotCount = slotCount;
+		this.isLuck = isLuck;
+		this.rand = rand;
+		this.skill = skillLevel(slotCount);
 	}
 	
 	/**
@@ -48,8 +54,11 @@ public class BeanImpl implements Bean {
 	 * @return the current X-coordinate of the bean
 	 */
 	public int getXPos() {
-		// TODO: Implement
-		return 0;
+		return this.xpos;
+	}
+
+	public int getSkill(){
+		return this.skill;
 	}
 
 	/**
@@ -57,7 +66,7 @@ public class BeanImpl implements Bean {
 	 * to 0. 
 	 */
 	public void reset() {
-		// TODO: Implement
+		this.xpos = 0;
 	}
 	
 	/**
@@ -66,6 +75,30 @@ public class BeanImpl implements Bean {
 	 * right.  The X-coordinate is updated accordingly.
 	 */
 	public void choose() {
-		// TODO: Implement
+		//Is in luck mode
+		if (this.isLuck){
+			if (rand.nextInt(2) == 1){
+				xpos++;
+			}
+		}
+		else {
+			if(getXPos() < getSkill()){
+				xpos++;
+			}
+		}
+	}
+
+	/**
+	 * SKILL_AVERAGE = (double) (SLOT_COUNT-1) * 0.5
+	 * SKILL_STDEV = (double) Math.sqrt(SLOT_COUNT * 0.5 * (1 - 0.5))
+	 * SKILL_LEVEL = (int) Math.round(rand.nextGaussian() * SKILL_STDEV + SKILL_AVERAGE)
+	 */
+	public int skillLevel(int slotCount){
+		double skillAvg;
+		double skillStDev;
+
+		skillAvg = (double) (slotCount-1) * 0.5;
+		skillStDev = Math.sqrt(slotCount * 0.5 * (1 - 0.5));
+		return ((int) Math.round(rand.nextGaussian() * skillStDev + skillAvg));
 	}
 }

@@ -1,7 +1,11 @@
+import static org.junit.Assert.*;
+
 import java.util.Random;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import gov.nasa.jpf.vm.Verify;
 
 /**
  * Code by @author Wonsun Ahn
@@ -32,12 +36,15 @@ public class BeanCounterLogicTest {
 			isLuck = true;
 		} else if (Config.getTestType() == TestType.JPF_ON_JUNIT) {
 			/*
-			 * TODO: Use the Java Path Finder Verify API to generate choices for slotCount,
 			 * beanCount, and isLuck: slotCount should take values 1-5, beanCount should
 			 * take values 0-3, and isLucky should be either true or false. For reference on
 			 * how to use the Verify API, look at:
 			 * https://github.com/javapathfinder/jpf-core/wiki/Verify-API-of-JPF
 			 */
+
+			int slotCount = Verify.getInt(1,5);
+			int beanCount = Verify.getInt(0,3);
+			boolean isLuck = Verify.getBoolean();
 		} else {
 			assert (false);
 		}
@@ -67,6 +74,7 @@ public class BeanCounterLogicTest {
 	 *             remaining bean count is beanCount - 1
 	 *             in-flight bean count is 1 (the bean initially at the top)
 	 *             in-slot bean count is 0.
+	 *
 	 *             If beanCount is 0,
 	 *             remaining bean count is 0
 	 *             in-flight bean count is 0
@@ -74,7 +82,35 @@ public class BeanCounterLogicTest {
 	 */
 	@Test
 	public void testReset() {
-		// TODO: Implement
+		// Preconditions
+
+		// Execution Steps
+		logic.reset(beans);
+
+		// Postconditon Invarients
+		if(beanCount > 0) {
+			assertEquals(beanCount - 1, logic.getRemainingBeanCount());
+			assertEquals(0, logic.getInFlightBeanXPos(0));
+
+			for(int i = 0; i < slotCount; i++) {
+				assertEquals(0, logic.getSlotBeanCount(i));
+			}
+		} else {
+			assertEquals(0, logic.getRemainingBeanCount());
+			assertEquals(-1, logic.getInFlightBeanXPos(0));
+
+			for(int i = 0; i < slotCount; i++) {
+				assertEquals(0, logic.getSlotBeanCount(i));
+			}
+		}
+
+
+
+
+
+
+
+
 		/*
 		 * Currently, it just prints out the failString to demonstrate to you all the
 		 * cases considered by Java Path Finder. If you called the Verify API correctly
@@ -102,7 +138,15 @@ public class BeanCounterLogicTest {
 	 */
 	@Test
 	public void testAdvanceStepCoordinates() {
-		// TODO: Implement
+		//Preconditions
+
+
+		//Execution Steps
+		logic.reset(beans);
+		while(logic.advanceStep());
+
+		//Postcondition Invariants
+		assertTrue
 	}
 
 	/**
