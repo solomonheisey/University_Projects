@@ -1,11 +1,14 @@
 import static org.junit.Assert.*;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import gov.nasa.jpf.vm.Verify;
+import sun.awt.image.ImageWatched;
 
 /**
  * Code by @author Wonsun Ahn
@@ -19,11 +22,15 @@ import gov.nasa.jpf.vm.Verify;
 public class BeanCounterLogicTest {
 	private static BeanCounterLogic logic; // The core logic of the program
 	private static Bean[] beans; // The beans in the machine
+	private static LinkedList<Bean> inFlightBeans; //The beans falling
 	private static String failString; // A descriptive fail string for assertions
 
 	private static int slotCount; // The number of slots in the machine we want to test
 	private static int beanCount; // The number of beans in the machine we want to test
+	private static int inFlightBeanCount; //The number of beans currently falling
+	private static int remainingBeans; //The number of beans in the machine not inserted
 	private static boolean isLuck; // Whether the machine we want to test is in "luck" or "skill" mode
+
 
 	/**
 	 * Sets up the test fixture.
@@ -41,7 +48,6 @@ public class BeanCounterLogicTest {
 			 * how to use the Verify API, look at:
 			 * https://github.com/javapathfinder/jpf-core/wiki/Verify-API-of-JPF
 			 */
-
 			int slotCount = Verify.getInt(1,5);
 			int beanCount = Verify.getInt(0,3);
 			boolean isLuck = Verify.getBoolean();
@@ -55,6 +61,14 @@ public class BeanCounterLogicTest {
 		beans = new Bean[beanCount];
 		for (int i = 0; i < beanCount; i++) {
 			beans[i] = Bean.createInstance(slotCount, isLuck, new Random(42));
+		}
+
+		if (beanCount > 0) {
+			// Place one bean at the top
+			inFlightBeans = new LinkedList<>();
+			inFlightBeans.add(beans[0]);
+			inFlightBeanCount++;
+			remainingBeans--;
 		}
 
 		// A failstring useful to pass to assertions to get a more descriptive error.
@@ -87,29 +101,22 @@ public class BeanCounterLogicTest {
 		// Execution Steps
 		logic.reset(beans);
 
-		// Postconditon Invarients
+		// Post-Condition Invariants
 		if(beanCount > 0) {
 			assertEquals(beanCount - 1, logic.getRemainingBeanCount());
-			assertEquals(0, logic.getInFlightBeanXPos(0));
+
+			for(int i = 0; i < slotCount; i++) {
+				assertEquals(0, logic.getSlotBeanCount(i));
+			}
+		} else if (beanCount == 0){
+			assertEquals(0, logic.getRemainingBeanCount());
 
 			for(int i = 0; i < slotCount; i++) {
 				assertEquals(0, logic.getSlotBeanCount(i));
 			}
 		} else {
-			assertEquals(0, logic.getRemainingBeanCount());
-			assertEquals(-1, logic.getInFlightBeanXPos(0));
-
-			for(int i = 0; i < slotCount; i++) {
-				assertEquals(0, logic.getSlotBeanCount(i));
-			}
+			assert (false);
 		}
-
-
-
-
-
-
-
 
 		/*
 		 * Currently, it just prints out the failString to demonstrate to you all the
@@ -146,7 +153,6 @@ public class BeanCounterLogicTest {
 		while(logic.advanceStep());
 
 		//Postcondition Invariants
-		assertTrue
 	}
 
 	/**
