@@ -60,10 +60,6 @@ public class BeanImpl implements Bean {
 
 	public int getYPos() { return this.yPos; }
 
-	public void insertBean() {
-		this.yPos = 0;
-	}
-
 	public int getSkill(){
 		return this.skill;
 	}
@@ -73,7 +69,7 @@ public class BeanImpl implements Bean {
 	 * to 0. 
 	 */
 	public void reset() {
-		this.xpos = 0;
+		this.xPos = 0;
 	}
 	
 	/**
@@ -82,19 +78,24 @@ public class BeanImpl implements Bean {
 	 * right.  The X-coordinate is updated accordingly.
 	 */
 	public void choose() {
-		//Is in luck mode
-		if (this.isLuck){
-			if (rand.nextInt(2) == 1){
-				xpos++;
-			}
-		}
+		if (yPos < 0){ yPos = 0;}
 		else {
-			if(getXPos() < getSkill()){
-				xpos++;
+			//Is in luck mode
+			if (this.isLuck){
+				if (rand.nextInt(2) == 1){
+					xPos++;
+				}
 			}
+			else {
+				if(getXPos() < getSkill()){
+					xPos++;
+				}
+			}
+			yPos++;
 		}
-		ypos++;
 	}
+
+
 
 	/**
 	 * SKILL_AVERAGE = (double) (SLOT_COUNT-1) * 0.5
