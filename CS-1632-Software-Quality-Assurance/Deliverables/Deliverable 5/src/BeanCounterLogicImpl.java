@@ -27,8 +27,10 @@ import java.util.*;
 
 public class BeanCounterLogicImpl implements BeanCounterLogic {
 	private int slotCount;
-	public BeanImpl[] beans;
+	private int remainingBeans;
+	public Bean[] beans;
 	private ArrayList<Bean>[] beanMachineSlots;
+
 
 
 	/**
@@ -44,11 +46,6 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		for(int i = 0; i < beanMachineSlots.length; i++) {
 			this.beanMachineSlots[i] = new ArrayList<>();
 		}
-
-
-
-
-
 	}
 
 	/**
@@ -66,8 +63,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @return number of beans remaining
 	 */
 	public int getRemainingBeanCount() {
-		// TODO: Implement
-		return 0;
+		return remainingBeans;
 	}
 
 	/**
@@ -88,8 +84,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @return number of beans in slot
 	 */
 	public int getSlotBeanCount(int i) {
-		// TODO: Implement
-		return 0;
+		return beanMachineSlots[i].size();
 	}
 
 	/**
@@ -129,13 +124,19 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @param beans array of beans to add to the machine
 	 */
 	public void reset(Bean[] beans) {
-
+		//Reset slots
 		for(int i = 0; i < beanMachineSlots.length; i++) {
 			beanMachineSlots[i] = new ArrayList<>();
 		}
 
+		//Set new bean array
+		this.beans = beans;
 
+		//Reset remaining bean counter
+		remainingBeans = beans.length;
 
+		//Insert first bean
+		this.beans[0].insertBean();
 	}
 
 	/**

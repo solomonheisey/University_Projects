@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class BeanImpl implements Bean {
 
-	private int xpos;
+	private int xPos, yPos;
 	private int slotCount;
 	private int skill;
 	private boolean isLuck;
@@ -46,6 +46,7 @@ public class BeanImpl implements Bean {
 		this.isLuck = isLuck;
 		this.rand = rand;
 		this.skill = skillLevel(slotCount);
+		this.yPos = -1;
 	}
 	
 	/**
@@ -54,7 +55,13 @@ public class BeanImpl implements Bean {
 	 * @return the current X-coordinate of the bean
 	 */
 	public int getXPos() {
-		return this.xpos;
+		return this.xPos;
+	}
+
+	public int getYPos() { return this.yPos; }
+
+	public void insertBean() {
+		this.yPos = 0;
 	}
 
 	public int getSkill(){
@@ -86,6 +93,7 @@ public class BeanImpl implements Bean {
 				xpos++;
 			}
 		}
+		ypos++;
 	}
 
 	/**
