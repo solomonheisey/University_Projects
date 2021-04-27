@@ -40,6 +40,7 @@ public class BeanCounterLogicTest {
 		if (Config.getTestType() == TestType.JUNIT) {
 			slotCount = 5;
 			beanCount = 3;
+			remainingBeans = beanCount;
 			isLuck = true;
 		} else if (Config.getTestType() == TestType.JPF_ON_JUNIT) {
 			/*
@@ -63,13 +64,8 @@ public class BeanCounterLogicTest {
 			beans[i] = Bean.createInstance(slotCount, isLuck, new Random(42));
 		}
 
-		if (beanCount > 0) {
-			// Place one bean at the top
-			inFlightBeans = new LinkedList<>();
-			inFlightBeans.add(beans[0]);
-			inFlightBeanCount++;
-			remainingBeans--;
-		}
+		inFlightBeans = new LinkedList<>();
+		insertBean();
 
 		// A failstring useful to pass to assertions to get a more descriptive error.
 		failString = "Failure in (slotCount=" + slotCount
@@ -100,22 +96,24 @@ public class BeanCounterLogicTest {
 
 		// Execution Steps
 		logic.reset(beans);
+		inFlightBeans = new LinkedList<>();
+		insertBean();
 
 		// Post-Condition Invariants
 		if(beanCount > 0) {
 			assertEquals(beanCount - 1, logic.getRemainingBeanCount());
-
+			assertEquals(1, inFlightBeanCount);
 			for(int i = 0; i < slotCount; i++) {
 				assertEquals(0, logic.getSlotBeanCount(i));
 			}
 		} else if (beanCount == 0){
 			assertEquals(0, logic.getRemainingBeanCount());
-
+			assertEquals(0, inFlightBeanCount);
 			for(int i = 0; i < slotCount; i++) {
 				assertEquals(0, logic.getSlotBeanCount(i));
 			}
 		} else {
-			assert (false);
+			assert(false);
 		}
 
 		/*
@@ -237,4 +235,16 @@ public class BeanCounterLogicTest {
 	public void testRepeat() {
 		// TODO: Implement
 	}
+
+	public static void insertBean(){
+		if (beanCount > 0) {
+			// Place one bean at the top
+			int currIndex = beanCount - remainingBeans;
+			inFlightBeans.add(beans[currIndex]);
+			beans[currIndex] = null;
+			inFlightBeanCount++;
+			remainingBeans--;
+		}
+	}
 }
+
