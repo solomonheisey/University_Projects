@@ -132,10 +132,13 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		//Set new bean array
 		this.beans = beans;
 
+
 		//Reset remaining bean counter
 		remainingBeans = beans.length;
 
 		//Insert first bean
+		this.beans = new Bean[beans.length];
+		this.beans = Arrays.copyOf(beans, beans.length);
 		this.beans[0].choose();
 		remainingBeans--;
 	}
