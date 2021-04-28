@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Queue;
 import java.util.Random;
 
@@ -96,6 +97,8 @@ public class BeanCounterLogicTest {
 
 		// Execution Steps
 		logic.reset(beans);
+		remainingBeans = beanCount;
+		inFlightBeanCount = 0;
 		inFlightBeans = new LinkedList<>();
 		insertBean();
 
@@ -130,7 +133,7 @@ public class BeanCounterLogicTest {
 		 * 
 		 * PLEASE REMOVE when you are done implementing.
 		 */
-		System.out.println(failString);
+		//System.out.println(failString);
 	}
 
 	/**
@@ -145,14 +148,31 @@ public class BeanCounterLogicTest {
 	public void testAdvanceStepCoordinates() {
 		//Preconditions
 
-
 		//Execution Steps
 		logic.reset(beans);
-		while(logic.advanceStep());
-
-		//Postcondition Invariants
+		BeanImpl testBean;
+		int xPos, yPos;
+		while (logic.advanceStep()) {
+			ListIterator listIterator = inFlightBeans.listIterator(0);
+			while(listIterator.hasNext()){
+				testBean = (BeanImpl) listIterator.next();
+				xPos = testBean.getXPos();
+				yPos = testBean.getYPos();
+				//X can never be greater than Y
+				if(xPos > yPos) {
+					assert (false);
+				}
+				//X and Y can never be less than 0
+				else if (xPos < 0 || yPos < 0){
+					assert (false);
+				}
+				//X and Y can never be greater than slotCount
+				else if (xPos > slotCount || yPos > slotCount){
+					assert (false);
+				}
+			}
+		}
 	}
-
 	/**
 	 * Test case for boolean advanceStep().
 	 * Preconditions: None.
@@ -241,11 +261,12 @@ public class BeanCounterLogicTest {
 			// Place one bean at the top
 			int currIndex = beanCount - remainingBeans;
 
-
-
 			inFlightBeans.add(beans[currIndex]);
-			beans[currIndex] = null;
-			inFlightBeanCount++;
+			if(inFlightBeanCount == slotCount) {
+				inFlightBeans.remove();
+			} else{
+				inFlightBeanCount++;
+			}
 			remainingBeans--;
 		}
 	}
