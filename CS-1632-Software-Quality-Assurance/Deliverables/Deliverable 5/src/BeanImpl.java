@@ -30,7 +30,6 @@ public class BeanImpl implements Bean {
 
 	private int xPos;
 	private int yPos;
-	private int slotCount;
 	private int skill;
 	private boolean isLuck;
 	private Random rand;
@@ -43,7 +42,6 @@ public class BeanImpl implements Bean {
 	 * @param rand		the random number generator
 	 */
 	BeanImpl(int slotCount, boolean isLuck, Random rand) {
-		this.slotCount = slotCount;
 		this.isLuck = isLuck;
 		this.rand = rand;
 		this.skill = skillLevel(slotCount);

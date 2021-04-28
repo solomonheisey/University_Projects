@@ -93,9 +93,7 @@ public class BeanCounterLogicTest {
 
 		// Execution Steps
 		logic.reset(beans);
-		remainingBeans = beanCount;
-		inFlightBeanCount = 0;
-		inFlightBeans = new LinkedList<>();
+		resetHelper();
 		insertBean();
 
 		// Post-Condition Invariants
@@ -385,6 +383,15 @@ public class BeanCounterLogicTest {
 			}
 			remainingBeans--;
 		}
+	}
+
+	/**
+	 * Sets static members from instance.
+	 */
+	public static void resetHelper() {
+		BeanCounterLogicTest.remainingBeans = BeanCounterLogicTest.beanCount;
+		BeanCounterLogicTest.remainingBeans = 0;
+		BeanCounterLogicTest.inFlightBeans = new LinkedList<>();
 	}
 }
 

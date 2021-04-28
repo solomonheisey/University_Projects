@@ -197,9 +197,11 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		this.remainingBeanCount = beans.length;
 
 		//Insert first bean
-		this.beans[0].choose();
-		this.inFlightBeans.add(this.beans[0]);
-		this.remainingBeanCount--;
+		if (this.beans.length != 0) {
+			this.beans[0].choose();
+			this.inFlightBeans.add(this.beans[0]);
+			this.remainingBeanCount--;
+		}
 	}
 
 	/**
