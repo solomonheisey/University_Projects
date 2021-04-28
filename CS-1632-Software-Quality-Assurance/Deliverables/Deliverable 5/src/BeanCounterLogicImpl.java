@@ -27,7 +27,8 @@ import java.util.*;
 
 public class BeanCounterLogicImpl implements BeanCounterLogic {
 	private int slotCount;
-	private int remainingBeans;
+	private int remainingBeanCount;
+	private int inFlightBeanCount;
 	public Bean[] beans;
 	private ArrayList<Bean>[] beanMachineSlots;
 
@@ -63,7 +64,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @return number of beans remaining
 	 */
 	public int getRemainingBeanCount() {
-		return remainingBeans;
+		return this.remainingBeanCount;
 	}
 
 	/**
@@ -84,7 +85,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @return number of beans in slot
 	 */
 	public int getSlotBeanCount(int i) {
-		return beanMachineSlots[i].size();
+		return this.beanMachineSlots[i].size();
 	}
 
 	/**
@@ -125,22 +126,22 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 */
 	public void reset(Bean[] beans) {
 		//Reset slots
-		for(int i = 0; i < beanMachineSlots.length; i++) {
-			beanMachineSlots[i] = new ArrayList<>();
+		for(int i = 0; i < this.beanMachineSlots.length; i++) {
+			this.beanMachineSlots[i] = new ArrayList<>();
 		}
 
-		//Set new bean array
-		this.beans = beans;
-
-
-		//Reset remaining bean counter
-		remainingBeans = beans.length;
-
-		//Insert first bean
+		//Reset bean array
 		this.beans = new Bean[beans.length];
 		this.beans = Arrays.copyOf(beans, beans.length);
+
+		//Reset remaining bean counters
+		this.remainingBeanCount = beans.length;
+		this.inFlightBeanCount = 0;
+
+		//Insert first bean
 		this.beans[0].choose();
-		remainingBeans--;
+		this.remainingBeanCount--;
+		this.inFlightBeanCount++;
 	}
 
 	/**
@@ -161,8 +162,25 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 *         means the machine is finished.
 	 */
 	public boolean advanceStep() {
-		// TODO: Implement
-		return false;
+		boolean hasChanged = false;
+		int currIndex = this.beans.length - getRemainingBeanCount();
+		int xPos;
+
+		//Checks each Y position
+		for(int y = getSlotCount()-1; y > 0; y--){
+			xPos = getInFlightBeanXPos(y-1);
+			//Steps each bean it finds
+			if (xPos != NO_BEAN_IN_YPOS){
+				beans[currIndex - y].choose();
+				hasChanged = true;
+			}
+		}
+		//Inserts next bean from remaining beans, if able
+		if(remainingBeanCount > 0){
+			beans[currIndex].choose();
+			remainingBeanCount--;
+		}
+		return hasChanged;
 	}
 	
 	/**

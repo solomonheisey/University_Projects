@@ -26,7 +26,7 @@ import java.util.Random;
  * goes right.
  */
 
-public class BeanImpl implements Bean, Cloneable {
+public class BeanImpl implements Bean {
 
 	private int xPos, yPos;
 	private int slotCount;
@@ -57,8 +57,6 @@ public class BeanImpl implements Bean, Cloneable {
 	public int getXPos() {
 		return this.xPos;
 	}
-
-	public int getYPos() { return this.yPos; }
 
 	public int getSkill(){
 		return this.skill;
