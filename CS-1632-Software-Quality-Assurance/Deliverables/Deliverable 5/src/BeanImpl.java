@@ -28,7 +28,8 @@ import java.util.Random;
 
 public class BeanImpl implements Bean {
 
-	private int xPos, yPos;
+	private int xPos;
+	private int yPos;
 	private int slotCount;
 	private int skill;
 	private boolean isLuck;
@@ -58,7 +59,7 @@ public class BeanImpl implements Bean {
 		return this.xPos;
 	}
 
-	public int getSkill(){
+	public int getSkill() {
 		return this.skill;
 	}
 
@@ -76,16 +77,16 @@ public class BeanImpl implements Bean {
 	 * right.  The X-coordinate is updated accordingly.
 	 */
 	public void choose() {
-		if (yPos < 0){ yPos = 0;}
-		else {
+		if (yPos < 0) {
+			yPos = 0;
+		} else {
 			//Is in luck mode
-			if (this.isLuck){
-				if (rand.nextInt(2) == 1){
+			if (this.isLuck) {
+				if (rand.nextInt(2) == 1) {
 					xPos++;
 				}
-			}
-			else {
-				if(getXPos() < getSkill()){
+			} else {
+				if (getXPos() < getSkill()) {
 					xPos++;
 				}
 			}
@@ -100,11 +101,11 @@ public class BeanImpl implements Bean {
 	 * SKILL_STDEV = (double) Math.sqrt(SLOT_COUNT * 0.5 * (1 - 0.5))
 	 * SKILL_LEVEL = (int) Math.round(rand.nextGaussian() * SKILL_STDEV + SKILL_AVERAGE)
 	 */
-	public int skillLevel(int slotCount){
+	public int skillLevel(int slotCount) {
 		double skillAvg;
 		double skillStDev;
 
-		skillAvg = (double) (slotCount-1) * 0.5;
+		skillAvg = (double) (slotCount - 1) * 0.5;
 		skillStDev = Math.sqrt(slotCount * 0.5 * (1 - 0.5));
 		return ((int) Math.round(rand.nextGaussian() * skillStDev + skillAvg));
 	}

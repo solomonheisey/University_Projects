@@ -1,13 +1,12 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.awt.*;
-import java.util.*;
-
+import gov.nasa.jpf.vm.Verify;
+import java.util.LinkedList;
+import java.util.Random;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import gov.nasa.jpf.vm.Verify;
-import sun.awt.image.ImageWatched;
+
 
 /**
  * Code by @author Wonsun Ahn
@@ -48,9 +47,9 @@ public class BeanCounterLogicTest {
 			 * how to use the Verify API, look at:
 			 * https://github.com/javapathfinder/jpf-core/wiki/Verify-API-of-JPF
 			 */
-			int slotCount = Verify.getInt(1,5);
-			int beanCount = Verify.getInt(0,3);
-			boolean isLuck = Verify.getBoolean();
+			slotCount = Verify.getInt(1, 5);
+			beanCount = Verify.getInt(0, 3);
+			isLuck = Verify.getBoolean();
 		} else {
 			assert (false);
 		}
@@ -83,7 +82,6 @@ public class BeanCounterLogicTest {
 	 *             remaining bean count is beanCount - 1
 	 *             in-flight bean count is 1 (the bean initially at the top)
 	 *             in-slot bean count is 0.
-	 *
 	 *             If beanCount is 0,
 	 *             remaining bean count is 0
 	 *             in-flight bean count is 0
@@ -101,20 +99,20 @@ public class BeanCounterLogicTest {
 		insertBean();
 
 		// Post-Condition Invariants
-		if(beanCount > 0) {
+		if (beanCount > 0) {
 			assertEquals(beanCount - 1, logic.getRemainingBeanCount());
 			assertEquals(1, inFlightBeanCount);
-			for(int i = 0; i < slotCount; i++) {
+			for (int i = 0; i < slotCount; i++) {
 				assertEquals(0, logic.getSlotBeanCount(i));
 			}
-		} else if (beanCount == 0){
+		} else if (beanCount == 0) {
 			assertEquals(0, logic.getRemainingBeanCount());
 			assertEquals(0, inFlightBeanCount);
-			for(int i = 0; i < slotCount; i++) {
+			for (int i = 0; i < slotCount; i++) {
 				assertEquals(0, logic.getSlotBeanCount(i));
 			}
 		} else {
-			assert(false);
+			assert (false);
 		}
 
 		/*
@@ -156,19 +154,18 @@ public class BeanCounterLogicTest {
 					//X can never be greater than Y
 					if (xPos > yPos) {
 						assert (false);
-					}
-					//X and Y can never be less than 0
-					else if (xPos < 0 || yPos < 0) {
+					} else if (xPos < 0 || yPos < 0) {
+						//X and Y can never be less than 0
 						assert (false);
-					}
-					//X and Y can never be greater than slotCount
-					else if (xPos > slotCount || yPos > slotCount) {
+					} else if (xPos > slotCount || yPos > slotCount) {
+						//X and Y can never be greater than slotCount
 						assert (false);
 					}
 				}
 			}
 		}
 	}
+
 	/**
 	 * Test case for boolean advanceStep().
 	 * Preconditions: None.
@@ -184,11 +181,11 @@ public class BeanCounterLogicTest {
 
 		// Execution steps
 		logic.reset(beans);
-		while(logic.advanceStep()){
+		while (logic.advanceStep()) {
 
 			// Post-Condition Invariants
 			int slotBeanCount = 0;
-			for(int i = 0; i < slotCount; i++){
+			for (int i = 0; i < slotCount; i++) {
 				slotBeanCount += logic.getSlotBeanCount(i);
 			}
 			assertEquals(beanCount, remainingBeans + inFlightBeanCount + slotBeanCount);
@@ -212,11 +209,13 @@ public class BeanCounterLogicTest {
 
 		// Execution steps
 		logic.reset(beans);
-		while(logic.advanceStep()){}
+		while (logic.advanceStep()) {
+
+		}
 
 		// Post-Condition Invariants
 		int slotBeanCount = 0;
-		for( int i = 0; i < slotCount; i++) {
+		for (int i = 0; i < slotCount; i++) {
 			slotBeanCount += logic.getSlotBeanCount(i);
 		}
 		assertEquals(0, remainingBeans);
@@ -246,42 +245,34 @@ public class BeanCounterLogicTest {
 
 		// Execution Steps
 		logic.reset(beans);
-		while(logic.advanceStep()){}
+		while (logic.advanceStep()){
+		}
 
-		assertEquals(0, remainingBeans);
-		assertEquals(0, inFlightBeanCount);
-
-		int inSlotBeanCount = 0;
 		int[] inSlotBefore = new int[slotCount];
-		for( int i = 0; i < slotCount; i++) {
-			inSlotBeanCount += logic.getSlotBeanCount(i);
+		for (int i = 0; i < slotCount; i++) {
 			inSlotBefore[i] = logic.getSlotBeanCount(i);
 		}
 
-		assertEquals(beanCount, inSlotBeanCount);
-
-
-
 		int split = beanCount / 2;
-		int count =
+		int slotIndex = slotCount - 1;
+		boolean flag = true;
 
-
-
-
-
-
-
-
-
-
-
-
-
+		while (slotIndex > 0 && flag) {
+			if (split - logic.getSlotBeanCount(slotIndex) < 0) {
+				inSlotBefore[slotIndex] -= split;
+				flag = false;
+			} else {
+				inSlotBefore[slotIndex] = 0;
+				split -= logic.getSlotBeanCount(slotIndex);
+				slotIndex -= 1;
+			}
+		}
 
 		// Post-Condition Invariants
 		logic.lowerHalf();
-
-
+		for (int i = 0; i < slotCount; i++) {
+			assertEquals(inSlotBefore[i], logic.getSlotBeanCount(i));
+		}
 	}
 	
 	/**
@@ -301,42 +292,38 @@ public class BeanCounterLogicTest {
 	 */
 	@Test
 	public void testUpperHalf() {
+
 		// Preconditions
 
 		// Execution Steps
 		logic.reset(beans);
-		while(logic.advanceStep()){}
+		while (logic.advanceStep()) {
+		}
 
-		assertEquals(0, remainingBeans);
-		assertEquals(0, inFlightBeanCount);
-
-		int inSlotBeanCount = 0;
 		int[] inSlotBefore = new int[slotCount];
-		for( int i = 0; i < slotCount; i++) {
-			inSlotBeanCount += logic.getSlotBeanCount(i);
+		for (int i = 0; i < slotCount; i++) {
 			inSlotBefore[i] = logic.getSlotBeanCount(i);
 		}
 
-		assertEquals(beanCount, inSlotBeanCount);
+		int split = beanCount / 2;
+		int slotIndex = 0;
+		boolean flag = true;
+
+		while (slotIndex < slotCount && flag) {
+			if (split - logic.getSlotBeanCount(slotIndex) < 0) {
+				inSlotBefore[slotIndex] -= split;
+				flag = false;
+			} else {
+				inSlotBefore[slotIndex] = 0;
+				split -= logic.getSlotBeanCount(slotIndex);
+				slotIndex += 1;
+			}
+		}
 
 		// Post-Condition Invariants
 		logic.upperHalf();
-
-		// Even slot count
-		if(slotCount % 2 == 0) {
-			for(int i = 0; i < (slotCount / 2); i++) {
-				assertEquals(0, logic.getSlotBeanCount(i));
-			}
-			for( int i = (slotCount / 2); i < slotCount; i++) {
-				assertEquals(inSlotBefore[i], logic.getSlotBeanCount(i));
-			}
-		} else {
-			for( int i = 0; i < ((slotCount + 1) / 2); i++) {
-				assertEquals(0, logic.getSlotBeanCount(i));
-			}
-			for( int i = ((slotCount + 1) / 2); i < slotCount; i++) {
-				assertEquals(inSlotBefore[i], logic.getSlotBeanCount(i));
-			}
+		for (int i = 0; i < slotCount; i++) {
+			assertEquals(inSlotBefore[i], logic.getSlotBeanCount(i));
 		}
 	}
 	
@@ -357,38 +344,43 @@ public class BeanCounterLogicTest {
 
 		// Execution Steps
 		logic.reset(beans);
-		while(logic.advanceStep()){}
+		while (logic.advanceStep()) {
+		}
 
 		int [] runOne = new int[slotCount];
-		for( int i = 0; i < slotCount; i++) {
-			runOne[i]= logic.getSlotBeanCount(i);
+		for (int i = 0; i < slotCount; i++) {
+			runOne[i] = logic.getSlotBeanCount(i);
 		}
 
 		logic.repeat();
-		while(logic.advanceStep()){}
+		while (logic.advanceStep()) {
+		}
 
 		int [] runTwo = new int[slotCount];
-		for( int i = 0; i < slotCount; i++) {
-			runTwo[i]= logic.getSlotBeanCount(i);
+		for (int i = 0; i < slotCount; i++) {
+			runTwo[i] = logic.getSlotBeanCount(i);
 		}
 
 		// Post-Condition Invariants
-		if(!isLuck) {
-			for( int i = 0; i < slotCount; i++) {
+		if (!isLuck) {
+			for (int i = 0; i < slotCount; i++) {
 				assertEquals(runOne[i], runTwo[i]);
 			}
 		}
 	}
 
-	public static void insertBean(){
+	/**
+	 * Inserts bean at the top.
+	 */
+	public static void insertBean() {
 		if (beanCount > 0) {
 			// Place one bean at the top
 			int currIndex = beanCount - remainingBeans;
 
 			inFlightBeans.add(beans[currIndex]);
-			if(inFlightBeanCount == slotCount) {
+			if (inFlightBeanCount == slotCount) {
 				inFlightBeans.remove();
-			} else{
+			} else {
 				inFlightBeanCount++;
 			}
 			remainingBeans--;
