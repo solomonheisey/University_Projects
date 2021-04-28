@@ -120,14 +120,19 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @return Average slot number of all the beans in slots.
 	 */
 	public double getAverageSlotBeanCount() {
-		double average = 0;
-		if (slotCount != 0) {
-			for (int i = 0; i < slotCount; i++) {
-				average += this.getSlotBeanCount(i) * i;
-			}
-			average /= slotCount;
+		int beanCounter = 0;
+		int weightedSum = 0;
+
+		for (int i = 0; i < slotCount; i++) {
+			beanCounter += this.getSlotBeanCount(i);
+			weightedSum += (i * this.getSlotBeanCount(i));
 		}
-		return average;
+
+		if (beanCounter == 0) {
+			return 0;
+		} else {
+			return (double) weightedSum / beanCounter;
+		}
 	}
 
 	/**

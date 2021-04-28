@@ -368,6 +368,34 @@ public class BeanCounterLogicTest {
 	}
 
 	/**
+	 * Test case for double getSkill()
+	 * 	 * Preconditions: 	Create a random object rand with a seed of 1.
+	 * 	 				  	Create testBean from the BeanImpl class with slotCount = 1,
+	 * 	 				  	isLuck = true, and rand = rand.
+	 * 	 				  	Create testBean2 from the BeanImpl class with slotCount = 5,
+	 * 	 				  	isLuck = true, and rand = rand.
+	 * 	 * Execution steps: Call testBean.getSkill().
+	 * 	 					Call testBean2.getSkill().
+	 * 	 * Invariants: 		testBean.getSkill() and testBean2.getSkill() should be identical
+	 * 	 					with an epsilon value of 0.000001d.
+	 */
+	@Test
+	public void testSkillLevel() {
+		// Preconditions
+		Random rand = new Random(1);
+		BeanImpl testBean = new BeanImpl(1, true, rand);
+		BeanImpl testBean2 = new BeanImpl(5, true, rand);
+
+		// Execution steps
+		double skill = testBean.getSkill();
+		double skill2 = testBean2.getSkill();
+
+		// Post-Condition Invariants
+		double epsilon = 0.000001d;
+		assertEquals(skill, skill2, epsilon);
+	}
+
+	/**
 	 * Inserts bean at the top.
 	 */
 	public static void insertBean() {
@@ -390,7 +418,7 @@ public class BeanCounterLogicTest {
 	 */
 	public static void resetHelper() {
 		BeanCounterLogicTest.remainingBeans = BeanCounterLogicTest.beanCount;
-		BeanCounterLogicTest.remainingBeans = 0;
+		BeanCounterLogicTest.inFlightBeanCount = 0;
 		BeanCounterLogicTest.inFlightBeans = new LinkedList<>();
 	}
 }
