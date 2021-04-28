@@ -26,7 +26,7 @@ import java.util.Random;
  * goes right.
  */
 
-public class BeanImpl implements Bean {
+public class BeanImpl implements Bean, Cloneable {
 
 	private int xPos, yPos;
 	private int slotCount;
@@ -48,7 +48,7 @@ public class BeanImpl implements Bean {
 		this.skill = skillLevel(slotCount);
 		this.yPos = -1;
 	}
-	
+
 	/**
 	 * Returns the current X-coordinate position of the bean in the logical coordinate system.
 	 * 

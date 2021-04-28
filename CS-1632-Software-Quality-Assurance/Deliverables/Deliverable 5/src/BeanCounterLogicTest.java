@@ -240,6 +240,9 @@ public class BeanCounterLogicTest {
 		if (beanCount > 0) {
 			// Place one bean at the top
 			int currIndex = beanCount - remainingBeans;
+
+
+
 			inFlightBeans.add(beans[currIndex]);
 			beans[currIndex] = null;
 			inFlightBeanCount++;
