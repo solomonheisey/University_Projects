@@ -183,7 +183,22 @@ public class BeanCounterLogicTest {
 	 */
 	@Test
 	public void testAdvanceStepBeanCount() {
-		// TODO: Implement
+
+		// Preconditions
+
+		// Execution steps
+		logic.reset(beans);
+		while(logic.advanceStep()){
+
+			int slotBeanCount = 0;
+
+			for(int i = 0; i < slotCount; i++){
+				slotBeanCount += logic.getSlotBeanCount(i);
+			}
+
+			// Post-Condition Invarients
+			assertEquals(remainingBeans + inFlightBeanCount + slotBeanCount, beanCount);
+		}
 	}
 
 	/**
