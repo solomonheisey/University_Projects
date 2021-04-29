@@ -33,8 +33,8 @@ import java.util.Random;
 public class BeanCounterLogicImpl implements BeanCounterLogic {
 	private int slotCount;
 	private int remainingBeanCount;
-	private int translatedYPos;
-	private LinkedList<Bean> inFlightBeans;
+	private Bean[] inFlightBeans;
+	//private LinkedList<Bean> inFlightBeans;
 	public Bean[] beans;
 	private ArrayList<Bean>[] beanMachineSlots;
 
@@ -80,27 +80,10 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 */
 	public int getInFlightBeanXPos(int yPos) {
 		int xPos = NO_BEAN_IN_YPOS;
-		int inFlightBeanCount = inFlightBeans.size();
-		//Calculate max index within inFlightBeans
-		int maxIndex = inFlightBeanCount - 1;
-		//Still has more beans to drop, less than max in flight beans
-		if (this.remainingBeanCount > 0 && inFlightBeanCount < this.slotCount) {
-			//Checks if y position is valid
-			if (yPos <= maxIndex) {
-				translatedYPos = maxIndex - yPos;
-				xPos = inFlightBeans.get(translatedYPos).getXPos();
-			}
-		} else if (this.remainingBeanCount >= 0 && inFlightBeanCount == this.slotCount) {
-			//Still has more beans to drop, max in flight beans
-			//Translate yPos to inFlightBean LinkedList index
-			translatedYPos = (this.slotCount - 1) - yPos;
-			//Checks if y position is valid
-			if (translatedYPos <= maxIndex) {
-				xPos = inFlightBeans.get(translatedYPos).getXPos();
-			}
-		}
-		//Else, no more beans to drop, no in flight beans
 
+		if (inFlightBeans[yPos] != null) {
+			xPos = inFlightBeans[yPos].getXPos();
+		}
 		return xPos;
 	}
 
@@ -196,7 +179,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		this.beans = Arrays.copyOf(beans, beans.length);
 
 		//Reset in flight beans list
-		this.inFlightBeans = new LinkedList<>();
+		this.inFlightBeans = new Bean[slotCount];
 
 		//Reset remaining bean counters
 		this.remainingBeanCount = beans.length;
@@ -204,7 +187,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		//Insert first bean
 		if (this.beans.length != 0) {
 			this.beans[0].choose();
-			this.inFlightBeans.add(this.beans[0]);
+			this.inFlightBeans[0] = this.beans[0];
 			this.remainingBeanCount--;
 		}
 	}
@@ -228,7 +211,6 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 */
 	public boolean advanceStep() {
 		boolean hasChanged = false;
-		boolean doRemove = false;
 		int xPos;
 		//Checks each Y position
 		for (int yPos = this.slotCount - 1; yPos >= 0; yPos--) {
@@ -238,24 +220,30 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 			if (xPos != NO_BEAN_IN_YPOS) {
 				//Adds bean into slot if already above one
 				if (yPos == this.slotCount - 1) {
-					this.beanMachineSlots[xPos].add(inFlightBeans.get(translatedYPos));
-					doRemove = true;
+					this.beanMachineSlots[xPos].add(inFlightBeans[yPos]);
 				} else {
-					//Otherwise moves bean downward
-					inFlightBeans.get(translatedYPos).choose();
+					//Otherwise moves bean downward on the pegs
+					inFlightBeans[yPos].choose();
+					//Move the bean downward within the tracking array
+					inFlightBeans[yPos+1] = inFlightBeans[yPos];
+					//TODO: Unable to check this, but if setting the yPos bean to null
+					//      removes the bean from every array its in, you'll need to do
+					//      a deep copy instead
 				}
+				//Remove the bean from its previous position within the tracking array
+				inFlightBeans[yPos] = null;
 				hasChanged = true;
 			}
 		}
 		//Inserts next bean from remaining beans, if able
 		if (this.remainingBeanCount > 0) {
 			int nextBean = beans.length - this.remainingBeanCount;
+			//Set the new bean at the top of the pegs
 			this.beans[nextBean].choose();
-			inFlightBeans.add(this.beans[nextBean]);
+			//Add the bean to the tracking array
+			inFlightBeans[0] = this.beans[nextBean];
+			//Reduce the number of beans remaining
 			this.remainingBeanCount--;
-		}
-		if (doRemove) {
-			inFlightBeans.remove();
 		}
 		return hasChanged;
 	}
