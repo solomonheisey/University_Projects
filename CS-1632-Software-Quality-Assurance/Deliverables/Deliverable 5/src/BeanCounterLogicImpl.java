@@ -1,4 +1,9 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Formatter;
+import java.util.LinkedList;
+import java.util.Random;
+
 
 /**
  * Code by @author Wonsun Ahn
@@ -44,7 +49,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	BeanCounterLogicImpl(int slotCount) {
 		this.slotCount = slotCount;
 		this.beanMachineSlots = new ArrayList[slotCount];
-		for(int i = 0; i < this.beanMachineSlots.length; i++) {
+		for (int i = 0; i < this.beanMachineSlots.length; i++) {
 			this.beanMachineSlots[i] = new ArrayList<>();
 		}
 	}
@@ -77,21 +82,20 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		int xPos = NO_BEAN_IN_YPOS;
 		int inFlightBeanCount = inFlightBeans.size();
 		//Calculate max index within inFlightBeans
-		int maxIndex = inFlightBeanCount-1;
+		int maxIndex = inFlightBeanCount - 1;
 		//Still has more beans to drop, less than max in flight beans
-		if(this.remainingBeanCount > 0 && inFlightBeanCount < this.slotCount){
+		if (this.remainingBeanCount > 0 && inFlightBeanCount < this.slotCount) {
 			//Checks if y position is valid
-			if(yPos <= maxIndex){
+			if (yPos <= maxIndex) {
 				translatedYPos = maxIndex - yPos;
 				xPos = inFlightBeans.get(translatedYPos).getXPos();
 			}
-		}
-		//Still has more beans to drop, max in flight beans
-		else if(this.remainingBeanCount >= 0 && inFlightBeanCount == this.slotCount){
+		} else if (this.remainingBeanCount >= 0 && inFlightBeanCount == this.slotCount) {
+			//Still has more beans to drop, max in flight beans
 			//Translate yPos to inFlightBean LinkedList index
-			translatedYPos = (this.slotCount-1) - yPos;
+			translatedYPos = (this.slotCount - 1) - yPos;
 			//Checks if y position is valid
-			if(translatedYPos <= maxIndex){
+			if (translatedYPos <= maxIndex) {
 				xPos = inFlightBeans.get(translatedYPos).getXPos();
 			}
 		}
@@ -116,14 +120,19 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 * @return Average slot number of all the beans in slots.
 	 */
 	public double getAverageSlotBeanCount() {
-		double average = 0;
-		if(slotCount != 0) {
-			for( int i = 0; i < slotCount; i++) {
-				average += this.getSlotBeanCount(i) * i;
-			}
-			average /= slotCount;
+		int beanCounter = 0;
+		int weightedSum = 0;
+
+		for (int i = 0; i < slotCount; i++) {
+			beanCounter += this.getSlotBeanCount(i);
+			weightedSum += (i * this.getSlotBeanCount(i));
 		}
-		return average;
+
+		if (beanCounter == 0) {
+			return 0;
+		} else {
+			return (double) weightedSum / beanCounter;
+		}
 	}
 
 	/**
@@ -134,16 +143,16 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 */
 	public void upperHalf() {
 		int beans = 0;
-		for( int k = 0; k < this.beanMachineSlots.length; k++) {
+		for (int k = 0; k < this.beanMachineSlots.length; k++) {
 			beans += this.getSlotBeanCount(k);
 		}
 
-		for(int i = 0, j = 0; i < beans / 2 && j < this.beanMachineSlots.length;) {
-			if(this.beanMachineSlots[j].size() == 0){
-				j+=1;
+		for (int i = 0, j = 0; i < beans / 2 && j < this.beanMachineSlots.length;) {
+			if (this.beanMachineSlots[j].size() == 0) {
+				j += 1;
 			} else {
 				this.beanMachineSlots[j].remove(0);
-				i+=1;
+				i += 1;
 			}
 		}
 	}
@@ -156,16 +165,16 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 */
 	public void lowerHalf() {
 		int beans = 0;
-		for( int k = 0; k < this.beanMachineSlots.length; k++) {
+		for (int k = 0; k < this.beanMachineSlots.length; k++) {
 			beans += this.getSlotBeanCount(k);
 		}
 
-		for(int i = 0, j = this.beanMachineSlots.length - 1; i < beans / 2 && j >= 0;) {
-			if(this.beanMachineSlots[j].size() == 0){
-				j-=1;
+		for (int i = 0, j = this.beanMachineSlots.length - 1; i < beans / 2 && j >= 0;) {
+			if (this.beanMachineSlots[j].size() == 0) {
+				j -= 1;
 			} else {
 				this.beanMachineSlots[j].remove(0);
-				i+=1;
+				i += 1;
 			}
 		}
 	}
@@ -178,7 +187,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 	 */
 	public void reset(Bean[] beans) {
 		//Reset slots
-		for(int i = 0; i < this.beanMachineSlots.length; i++) {
+		for (int i = 0; i < this.beanMachineSlots.length; i++) {
 			this.beanMachineSlots[i] = new ArrayList<>();
 		}
 
@@ -193,9 +202,11 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		this.remainingBeanCount = beans.length;
 
 		//Insert first bean
-		this.beans[0].choose();
-		this.inFlightBeans.add(this.beans[0]);
-		this.remainingBeanCount--;
+		if (this.beans.length != 0) {
+			this.beans[0].choose();
+			this.inFlightBeans.add(this.beans[0]);
+			this.remainingBeanCount--;
+		}
 	}
 
 	/**
@@ -220,31 +231,30 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 		boolean doRemove = false;
 		int xPos;
 		//Checks each Y position
-		for(int yPos = this.slotCount-1; yPos >= 0; yPos--){
+		for (int yPos = this.slotCount - 1; yPos >= 0; yPos--) {
 			//Checks for the X in the corresponding Y position
 			xPos = getInFlightBeanXPos(yPos);
 			//Steps each bean it finds
-			if (xPos != NO_BEAN_IN_YPOS){
+			if (xPos != NO_BEAN_IN_YPOS) {
 				//Adds bean into slot if already above one
-				if (yPos == this.slotCount-1){
+				if (yPos == this.slotCount - 1) {
 					this.beanMachineSlots[xPos].add(inFlightBeans.get(translatedYPos));
 					doRemove = true;
-				}
-				//Otherwise moves bean downward
-				else {
+				} else {
+					//Otherwise moves bean downward
 					inFlightBeans.get(translatedYPos).choose();
 				}
 				hasChanged = true;
 			}
 		}
 		//Inserts next bean from remaining beans, if able
-		if(this.remainingBeanCount > 0){
+		if (this.remainingBeanCount > 0) {
 			int nextBean = beans.length - this.remainingBeanCount;
 			this.beans[nextBean].choose();
 			inFlightBeans.add(this.beans[nextBean]);
 			this.remainingBeanCount--;
 		}
-		if(doRemove){
+		if (doRemove) {
 			inFlightBeans.remove();
 		}
 		return hasChanged;
