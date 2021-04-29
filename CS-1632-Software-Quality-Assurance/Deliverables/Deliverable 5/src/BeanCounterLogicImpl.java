@@ -225,7 +225,7 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 					//Otherwise moves bean downward on the pegs
 					inFlightBeans[yPos].choose();
 					//Move the bean downward within the tracking array
-					inFlightBeans[yPos+1] = inFlightBeans[yPos];
+					inFlightBeans[yPos + 1] = inFlightBeans[yPos];
 					//TODO: Unable to check this, but if setting the yPos bean to null
 					//      removes the bean from every array its in, you'll need to do
 					//      a deep copy instead

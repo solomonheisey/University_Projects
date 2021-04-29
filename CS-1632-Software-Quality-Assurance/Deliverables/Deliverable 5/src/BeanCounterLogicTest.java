@@ -183,10 +183,15 @@ public class BeanCounterLogicTest {
 
 			// Post-Condition Invariants
 			int slotBeanCount = 0;
+			int flightBeanCount = 0;
 			for (int i = 0; i < slotCount; i++) {
 				slotBeanCount += logic.getSlotBeanCount(i);
+				if (logic.getInFlightBeanXPos(i) != -1) {
+					flightBeanCount++;
+				}
 			}
-			assertEquals(beanCount, remainingBeans + inFlightBeanCount + slotBeanCount);
+			int totalBeans = logic.getRemainingBeanCount() + flightBeanCount + slotBeanCount;
+			assertEquals(beanCount, totalBeans);
 		}
 	}
 
@@ -208,16 +213,19 @@ public class BeanCounterLogicTest {
 		// Execution steps
 		logic.reset(beans);
 		while (logic.advanceStep()) {
-
 		}
 
 		// Post-Condition Invariants
 		int slotBeanCount = 0;
+		int flightBeanCount = 0;
 		for (int i = 0; i < slotCount; i++) {
 			slotBeanCount += logic.getSlotBeanCount(i);
+			if (logic.getInFlightBeanXPos(i) != -1) {
+				flightBeanCount++;
+			}
 		}
-		assertEquals(0, remainingBeans);
-		assertEquals(0, inFlightBeanCount);
+		assertEquals(0, logic.getRemainingBeanCount());
+		assertEquals(0, flightBeanCount);
 		assertEquals(beanCount, slotBeanCount);
 	}
 	
