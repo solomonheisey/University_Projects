@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import gov.nasa.jpf.vm.Verify;
 import java.util.LinkedList;
@@ -112,22 +113,6 @@ public class BeanCounterLogicTest {
 		} else {
 			assert (false);
 		}
-
-		/*
-		 * Currently, it just prints out the failString to demonstrate to you all the
-		 * cases considered by Java Path Finder. If you called the Verify API correctly
-		 * in setUp(), you should see all combinations of machines
-		 * (slotCount/beanCount/isLucky) printed here:
-		 * 
-		 * Failure in (slotCount=1, beanCount=0, isLucky=false):
-		 * Failure in (slotCount=1, beanCount=0, isLucky=true):
-		 * Failure in (slotCount=1, beanCount=1, isLucky=false):
-		 * Failure in (slotCount=1, beanCount=1, isLucky=true):
-		 * ...
-		 * 
-		 * PLEASE REMOVE when you are done implementing.
-		 */
-		//System.out.println(failString);
 	}
 
 	/**
@@ -376,31 +361,26 @@ public class BeanCounterLogicTest {
 	}
 
 	/**
-	 * Test case for double getSkill()
-	 * 	 * Preconditions: 	Create a random object rand with a seed of 1.
-	 * 	 				  	Create testBean from the BeanImpl class with slotCount = 1,
-	 * 	 				  	isLuck = true, and rand = rand.
-	 * 	 				  	Create testBean2 from the BeanImpl class with slotCount = 5,
-	 * 	 				  	isLuck = true, and rand = rand.
-	 * 	 * Execution steps: Call testBean.getSkill().
-	 * 	 					Call testBean2.getSkill().
-	 * 	 * Invariants: 		testBean.getSkill() and testBean2.getSkill() should be identical
-	 * 	 					with an epsilon value of 0.000001d.
+	 * Test case for double getAverageSlotBeanCount().
+	 * 	 * Preconditions: None.
+	 * 	 * Execution steps: Call logic.reset(beans).
+	 * 	 					Call logic.advanceStep() in a loop until it returns false
+	 * 	 					(the machine terminates).
+	 * 	 * Invariants: 		After the machine terminates,
+	 * 	 					logic.getAverageSlotBeanCount() is >= 0.
 	 */
 	@Test
-	public void testSkillLevel() {
+	public void testAverageSlotBeanCount() {
 		// Preconditions
-		Random rand = new Random(1);
-		BeanImpl testBean = new BeanImpl(1, true, rand);
-		BeanImpl testBean2 = new BeanImpl(5, true, rand);
 
 		// Execution steps
-		double skill = testBean.getSkill();
-		double skill2 = testBean2.getSkill();
+		logic.reset(beans);
+		while (logic.advanceStep()) {
+		}
 
 		// Post-Condition Invariants
-		double epsilon = 0.000001d;
-		assertEquals(skill, skill2, epsilon);
+		double average = logic.getAverageSlotBeanCount();
+		assertTrue(average >= 0);
 	}
 
 	/**
